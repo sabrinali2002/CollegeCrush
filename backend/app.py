@@ -37,7 +37,7 @@ def sql_search(episode):
 def home():
     return render_template('base.html',title="sample html")
 
-@app.route("/episodes")
+@app.route("/colleges")
 def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
