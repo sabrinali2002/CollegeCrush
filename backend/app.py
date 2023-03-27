@@ -41,7 +41,7 @@ def home():
     return render_template('base.html',title="sample html")
 @app.route("/colleges")
 def episodes_search():
-	df = pd.read_csv('file.csv')
+	# df = pd.read_csv('file.csv')
 	# df.to_json('output.json')
     text = request.args.get("title")
     return sql_search(text)
