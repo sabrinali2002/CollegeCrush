@@ -24,8 +24,12 @@ class MySQLDatabaseHandler(object):
             f"mysql+pymysql://{self.MYSQL_USER}:{self.MYSQL_USER_PASSWORD}@{self.MYSQL_HOST}:{self.MYSQL_PORT}"
         )
         conn = engine.connect()
-        conn.execute(f"CREATE DATABASE IF NOT EXISTS {self.MYSQL_DATABASE}")
-        conn.execute(f"USE {self.MYSQL_DATABASE}")
+        print("-----------------------")
+        print(self.MYSQL_DATABASE)
+        e = db.text(f"CREATE DATABASE IF NOT EXISTS {self.MYSQL_DATABASE}")
+        conn.execute(e)
+        e = db.text(f"USE {self.MYSQL_DATABASE}")
+        conn.execute(e)
         return engine
 
     def lease_connection(self):
