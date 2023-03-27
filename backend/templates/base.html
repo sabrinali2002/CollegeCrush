@@ -11,7 +11,7 @@
                 <h1> College Crush </h1>
             </div>
             <div>
-                <h3> Format: Major, GPA, Preferred Location, Size </h3>
+                <h3> Major, GPA, Preferred Location, Size (Small, Medium, Large)</h3>
             </div>
             <div class="input-box" onclick="sendFocus()">
                 <img src="{{ url_for('static', filename='images/mag.png') }}" />
@@ -28,7 +28,6 @@
         function answerBoxTemplate(title,titleDesc){
             return `<div class=''>
                 <h3 class='episode-title'>${title}</h3>
-                <p class='episode-desc'>${titleDesc}</p>
             </div>`
         }
 
@@ -39,12 +38,12 @@
         function filterText(){
             document.getElementById("answer-box").innerHTML = ""
             console.log(document.getElementById("filter-text-val").value)
-            fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
+            fetch("/colleges?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
             .then((response) => response.json())
             .then((data) => data.forEach(row => {
                 
                 let tempDiv = document.createElement("div")
-                tempDiv.innerHTML = answerBoxTemplate(row.title,row.descr)
+                tempDiv.innerHTML = answerBoxTemplate(row.title)
                 document.getElementById("answer-box").appendChild(tempDiv)
             }));
 
