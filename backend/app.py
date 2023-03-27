@@ -56,7 +56,7 @@ def home():
 
 @app.route("/colleges")
 def episodes_search():
-	csv_to_json('file.csv')
+	# csv_to_json('file.csv')
     text = request.args.get("title")
     return sql_search(text)
 
