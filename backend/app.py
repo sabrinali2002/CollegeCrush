@@ -1,6 +1,7 @@
 import json
 import os
 import csv
+import pandas as pd
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
@@ -34,22 +35,14 @@ def sql_search(episode):
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys,i)) for i in data])
 
-def csv_to_json(csv_file_path, json_file_path):
-    # Open the CSV file and read its contents
-    with open(csv_file_path, 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        # Convert each row into a dictionary and add it to a list
-        rows = [row for row in csv_reader]
-
-    # Write the list of dictionaries to a JSON file
-    with open(json_file_path, 'w') as json_file:
         json.dump(rows, json_file, indent=4)
 @app.route("/")
 def home():
     return render_template('base.html',title="sample html")
 @app.route("/colleges")
 def episodes_search():
-	csv_to_json('file.csv','output.json')
+	df = pd.read_csv('file.csv')
+	df.to_json('output.json')
     text = request.args.get("title")
     return sql_search(text)
 
