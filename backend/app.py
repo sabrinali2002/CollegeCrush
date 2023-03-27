@@ -1,5 +1,6 @@
 import json
 import os
+import csv
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
@@ -33,12 +34,29 @@ def sql_search(episode):
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys,i)) for i in data])
 
+def csv_to_json(csv_file_path):
+    # Open the CSV file and read its contents
+    with open(csv_file_path, 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        # Convert each row into a dictionary and add it to a list
+        rows = [row for row in csv_reader]
+
+    # Construct the JSON file name with the timestamp
+    json_file_path = "output.json"
+
+    # Write the list of dictionaries to the JSON file
+    with open(json_file_path, 'w') as json_file:
+        json.dump(rows, json_file, indent=4)
+
+    # Return the path of the newly created JSON file
+    return json_file_path
 @app.route("/")
 def home():
     return render_template('base.html',title="sample html")
 
 @app.route("/colleges")
 def episodes_search():
+	csv_to_json('file.csv')
     text = request.args.get("title")
     return sql_search(text)
 
