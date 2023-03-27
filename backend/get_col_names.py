@@ -9,7 +9,7 @@ with open(
 
 # Write the headers to a file
 with open(
-    "/Users/jayfeng/Documents/GitHub/CollegeCrush/useful_data/DE_data_col_names.txt",
+    "CollegeCrush/useful_data/DE_data_col_names.txt",
     "w",
 ) as outfile:
     outfile.write(",".join(headers))
