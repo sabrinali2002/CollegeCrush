@@ -11,8 +11,8 @@ class MySQLDatabaseHandler(object):
         MYSQL_DATABASE,
         MYSQL_HOST="localhost",
     ):
-        self.IS_DOCKER = True if "clush" in os.environ else False
-        self.MYSQL_HOST = os.environ["clush"] if self.IS_DOCKER else MYSQL_HOST
+        self.IS_DOCKER = True if "DB_NAME" in os.environ else False
+        self.MYSQL_HOST = os.environ["DB_NAME"] if self.IS_DOCKER else MYSQL_HOST
         self.MYSQL_USER = "admin" if self.IS_DOCKER else MYSQL_USER
         self.MYSQL_USER_PASSWORD = "admin" if self.IS_DOCKER else MYSQL_USER_PASSWORD
         self.MYSQL_PORT = 3306 if self.IS_DOCKER else MYSQL_PORT
