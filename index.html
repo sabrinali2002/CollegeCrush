@@ -16,7 +16,7 @@
     </header>
     <main>
       <h2>Find Your Perfect College Match</h2>
-      <form action = "results.php" method = "GET">
+      <form>
         <div class = "q1">
             <label for="major">Select your preferred major:</label>
             <select id="major">
@@ -105,22 +105,36 @@
             </script>
             </div>
             </div>
-        <br>
-        <button type="submit">Find My Matches</button>
-      </form>
-      
-      <div class = "hidden">
-      <section>
-        <h3>Your Matches:</h3>
-        <ul id="matches">
-          <!-- Placeholder for dynamic content -->
 
-        </ul>
-      </section>
-      </div>
+            <button type="submit">Find My Matches</button>
+          </form>
+
+
+        <br>      
+    <div class = "show-more">
+      <div id="extra-text" class="extra-text">
+          <h2>Your Matches:</h2>
+          <ol id="matches">
+            <!-- Placeholder for dynamic content -->
+          <li>
+            <h3>Cornell University</h2>
+            <img src="images/cornell.png" alt="Cornell University"/>
+          </li>
+          <li>
+            <h3>Columbia University</h2>
+            <img src="images/columbia.png" alt="Columbia University"/>
+          </li>
+          <li>
+            <h3>Colgate University</h2>
+            <img src="images/colgate.png" alt="Colgate University"/>
+          </li>
+          </ol>
+    </div>
+    </div>
     </main>
     <footer>
       <p>&copy; College Crush 2023</p>
     </footer>
   </body>
 </html>
+

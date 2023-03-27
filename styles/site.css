@@ -71,7 +71,7 @@
     padding: 0.5rem;
   }
 
-  .q1,.q01, .q2, .q3{
+  .q1,.q01, .q2, .q3, .q4{
     padding: 0.5em;
     font-size: 20px
   }
@@ -142,3 +142,19 @@
     flex: 5px;
     text-align: center;
   }
+
+  ul  {
+    padding: 0.5em;
+  }
+
+  li {
+    padding: 2em;
+  }
+
+  img {
+    margin-top: 1em;
+  }
+
+.hidden {
+  display: none;
+}
