@@ -123,4 +123,19 @@
       <p>&copy; College Crush 2023</p>
     </footer>
   </body>
+   <script>
+    function filterText(){
+            document.getElementById("answer-box").innerHTML = ""
+            console.log(document.getElementById("filter-text-val").value)
+            fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
+            .then((response) => response.json())
+            .then((data) => data.forEach(row => {
+                
+                let tempDiv = document.createElement("div")
+                tempDiv.innerHTML = answerBoxTemplate(row.title,row.descr)
+                document.getElementById("answer-box").appendChild(tempDiv)
+            }));
+
+        }
+   </script>
 </html>
