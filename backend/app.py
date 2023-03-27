@@ -46,6 +46,8 @@ def home():
 def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
-
+    
+@app.route("/colleges")
+def college_search():
 
 # app.run(debug=True)
