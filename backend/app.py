@@ -52,7 +52,7 @@ def search_similarity(data, queries):
     for colleges in data:
         if 'state' in colleges and colleges['state'] == dic['state']:
             arr.append(({'title': colleges['name'], 'website': colleges['website']}))
-        elif 'region' in dic and colleges['state'] in region_dic[dic['region']]:
+        elif colleges['state'] in region_dic[dic['region']]:
             arr.append(({'title': colleges['name'], 'website': colleges['website']}))
     return arr
 @app.route("/")
