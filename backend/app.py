@@ -53,4 +53,4 @@ def episodes_search():
     print(result)
     return result
 
-# app.run(debug=True)
+app.run(debug=True)
