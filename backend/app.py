@@ -37,7 +37,7 @@ def sql_search(episode):
 def search_similarity(data, queries):
     arr = []
     for colleges in data:
-        if colleges['name'].lower() == queries.lower():
+        if colleges['state'] == queries:
             name = colleges['name'][0].upper() + colleges['name'].lower()[1:]
             arr.append(({'title': name, 'website': colleges['website']}))
     return arr
