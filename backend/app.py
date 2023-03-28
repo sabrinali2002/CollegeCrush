@@ -38,7 +38,8 @@ def search_similarity(data, queries):
     arr = []
     for colleges in data:
         if colleges['name'].lower() == queries.lower():
-            arr.append(({'title': colleges['name'].lower(), 'website': colleges['website']}))
+            name = colleges['name'][0].upper() + [colleges['name'].lower()][1:]
+            arr.append(({'title': name, 'website': colleges['website']}))
     return arr
 @app.route("/")
 def home():
