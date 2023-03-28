@@ -51,7 +51,7 @@ def search_similarity(data, queries):
             dic['region'] = i.upper()
     for colleges in data:
         if 'state' in colleges and colleges['state'] == dic['state']:
-            arr.append(({'title': colleges['name'], 'website': colleges['website']}))
+            arr.append(({'title': colleges['name'] + " (" + colleges['state']+")", 'website': colleges['website']}))
         elif colleges['state'] in region_dic[dic['region']]:
             arr.append(({'title': colleges['name'], 'website': colleges['website']}))
     return arr
