@@ -38,18 +38,22 @@ def search_similarity(data, queries):
     arr = []
     inputs = queries.split(' ')
     dic = {}
-    s = set()
-    s.add('WEST')
-    s.add('EAST')
-    s.add('MIDWEST')
-    s.add('SOUTH')
+    region_dic = {}
+    region_dic['WEST'] = set(['WA','OR','ID','MT','WY','CA','NV','UT','AZ','NM','CO'])
+    region_dic['MIDWEST'] = set(['ND','SD','NE','KS','MN','IA','MO','WI','IL','IN','MI','IN','OH'])
+    region_dic['NORTHEAST'] = set(['PA','NY','NJ','VT','NH','ME','MA','CT','RI'])
+    region_dic['SOUTH'] = set(['TX','OK','AR','LA','MS','TN','KY','AL','GA', 'FL','WV',
+                               'NC','VA','MD','DE','NC','SC'])
     for i in inputs:
         if len(i) == 2:
             dic['state'] = i
-        if i in s:
-            dic['region'] = i
+        if i.upper() in region_dic:
+            dic['region'] = i.upper()
     for colleges in data:
-        if colleges['state'] == dic['state']:
+        if 'state' in colleges and colleges['state'] == dic['state']:
+            name = colleges['name'][0].upper() + colleges['name'].lower()[1:]
+            arr.append(({'title': name, 'website': colleges['website']}))
+        elif 'region' in dic and colleges['state'] in region_dic[dic['region']]:
             name = colleges['name'][0].upper() + colleges['name'].lower()[1:]
             arr.append(({'title': name, 'website': colleges['website']}))
     return arr
