@@ -34,16 +34,22 @@ def sql_search(episode):
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys,i)) for i in data])
 
+def search_similarity(data, queries):
+    arr = []
+    for colleges in data:
+        if colleges['name'] == queries:
+            arr.append(colleges['name'])
+    return arr
 @app.route("/")
 def home():
     return render_template('base.html',title="sample html")
 
 @app.route("/colleges")
 def episodes_search():
+    text = request.args.get("title")
     with open('colleges.json','r') as f:
         data = json.load(f)
-    print(data)
-    text = request.args.get("title")
+    result = search_similarity(data, text)
     return sql_search(text)
 
 # app.run(debug=True)
