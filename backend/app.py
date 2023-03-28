@@ -55,8 +55,7 @@ def search_similarity(data, queries):
             dic['size'] = i
     for colleges in data:
         if 'state' in colleges and colleges['state'] == dic['state']:
-            name = colleges['name'][0].upper() + colleges['name'].lower()[1:]
-            arr.append(({'title': name, 'website': colleges['website'],'enrolled': colleges['tot_enroll']}))
+            arr.append(({'title': colleges['name'], 'website': colleges['website'],'enrolled': colleges['tot_enroll']}))
     return arr
 @app.route("/")
 def home():
