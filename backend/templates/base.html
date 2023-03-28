@@ -8,10 +8,10 @@
     <div class="full-body-container">
         <div class="top-text">
             <div>
-                <h1> College Crush </h1>
+                <h1 style = "color: blue"> College Crush </h1>
             </div>
             <div>
-                <h3> Preferred Location (Region or State), Size (Small, Medium, Large)</h3>
+                <h3> Input City:</h3>
             </div>
             <div class="input-box" onclick="sendFocus()">
                 <img src="{{ url_for('static', filename='images/mag.png') }}" />
@@ -28,7 +28,7 @@
         function answerBoxTemplate(title,website, enrolled){
             return `<div><div style="width: auto; margin-left: auto; margin-right: auto">
                 <h2 class='episode-title'>${title}</h2>
-                <a href = ${website}>${website}</a>
+                <p>${website}</p>
                 <h4> enrolled: ${enrolled}</h4>
                 </div>
             </div>`
