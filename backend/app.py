@@ -47,7 +47,7 @@ def search_similarity(data, queries):
     for i in inputs:
         if len(i) == 2:
             dic['state'] = i
-        if i.upper() in region_dic:
+        else:
             dic['region'] = i.upper()
     for colleges in data:
         if 'state' in colleges and colleges['state'] == dic['state']:
