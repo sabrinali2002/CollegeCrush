@@ -50,6 +50,6 @@ def episodes_search():
     with open('colleges.json','r') as f:
         data = json.load(f)
     result = search_similarity(data, text)
-    return json.dumps(result)
+    return result
 
 # app.run(debug=True)
