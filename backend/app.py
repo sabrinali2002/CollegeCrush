@@ -39,11 +39,11 @@ def search_similarity(data, queries):
     inputs = queries.split(' ')
     dic = {}
     region_dic = {}
-    region_dic['WEST'] = set(['WA','OR','ID','MT','WY','CA','NV','UT','AZ','NM','CO'])
-    region_dic['MIDWEST'] = set(['ND','SD','NE','KS','MN','IA','MO','WI','IL','IN','MI','IN','OH'])
-    region_dic['NORTHEAST'] = set(['PA','NY','NJ','VT','NH','ME','MA','CT','RI'])
-    region_dic['SOUTH'] = set(['TX','OK','AR','LA','MS','TN','KY','AL','GA', 'FL','WV',
-                               'NC','VA','MD','DE','NC','SC'])
+    region_dic['WEST'] = ['WA','OR','ID','MT','WY','CA','NV','UT','AZ','NM','CO']
+    region_dic['MIDWEST'] = ['ND','SD','NE','KS','MN','IA','MO','WI','IL','IN','MI','IN','OH']
+    region_dic['NORTHEAST'] = ['PA','NY','NJ','VT','NH','ME','MA','CT','RI']
+    region_dic['SOUTH'] = ['TX','OK','AR','LA','MS','TN','KY','AL','GA', 'FL','WV',
+                               'NC','VA','MD','DE','NC','SC']
     for i in inputs:
         if len(i) == 2:
             dic['state'] = i
