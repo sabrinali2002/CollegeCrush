@@ -37,8 +37,8 @@ def sql_search(episode):
 def search_similarity(data, queries):
     arr = []
     for colleges in data:
-        if colleges['name'] == queries:
-            arr.append(colleges['name'])
+        if colleges['name'].lower() == queries.lower():
+            arr.append(colleges['name'].lower())
     return arr
 @app.route("/")
 def home():
@@ -50,7 +50,6 @@ def episodes_search():
     with open('colleges.json','r') as f:
         data = json.load(f)
     result = search_similarity(data, text)
-    print(result)
     return result
 
-app.run(debug=True)
+# app.run(debug=True)
