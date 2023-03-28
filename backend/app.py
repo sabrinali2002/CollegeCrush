@@ -58,8 +58,10 @@ def search_similarity(data, queries):
             name = colleges['name'][0].upper() + colleges['name'].lower()[1:]
             arr.append(({'title': name, 'website': colleges['website']}))
         if 'state' in colleges and colleges['state'] in dic['region']:
-            name = colleges['name'][0].upper() + colleges['name'].lower()[1:]
-            arr.append(({'title': name, 'website': colleges['website']}))
+            if int(colleges['tot_enroll'])<10000:  
+                name = colleges['name'][0].upper() + colleges['name'].lower()[1:]
+                arr.append(({'title': name, 'website': colleges['website']}))
+
     return arr
 @app.route("/")
 def home():
