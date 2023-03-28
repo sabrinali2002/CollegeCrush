@@ -40,8 +40,8 @@ def home():
 
 @app.route("/colleges")
 def episodes_search():
-	with open('colleges.json', 'r') as f:
-    	data = json.load(f)
+    with open('colleges.json','r') as f:
+        data = json.load(f)
     text = request.args.get("title")
     return sql_search(text)
 
