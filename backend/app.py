@@ -37,8 +37,8 @@ def sql_search(episode):
 def search_similarity(data, queries):
     arr = []
     for colleges in data:
-        if colleges['name'].lower() == queries.lower():
-            arr.append(colleges['name'].lower())
+        if colleges['name'] == queries:
+            arr.append(colleges['name'])
     return arr
 @app.route("/")
 def home():
