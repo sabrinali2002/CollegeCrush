@@ -47,14 +47,12 @@ def search_similarity(data, queries):
     for i in inputs:
         if len(i) == 2:
             dic['state'] = i
-        if i.upper() in region_dic:
-            dic['region'] = i.upper()
-        if i == "SMALL":
-            dic['size'] = i
-        elif i == "LARGE":
-            dic['size'] = i
+        else:
+            dic['city'] = i
     for colleges in data:
         if 'state' in colleges and colleges['state'] == dic['state']:
+            arr.append(({'title': colleges['name'], 'website': colleges['website'],'enrolled': colleges['tot_enroll']}))
+        elif 'city' in dic and colleges['city'].lower() == dic['city']:
             arr.append(({'title': colleges['name'], 'website': colleges['website'],'enrolled': colleges['tot_enroll']}))
     return arr
 @app.route("/")
