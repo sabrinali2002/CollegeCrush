@@ -54,7 +54,8 @@ def search_similarity(data, queries):
             arr.append(({'title': colleges['name'], 'website': colleges['website'],'enrolled': colleges['tot_enroll']}))
         elif 'city' in dic and colleges['city'].lower() == dic['city'].lower():
             arr.append(({'title': colleges['name'], 'website': colleges['website'],'enrolled': colleges['tot_enroll']}))
-    return arr
+    newlist = sorted(arr, key=lambda d: d['title']) 
+    return newlist
 @app.route("/")
 def home():
     return render_template('base.html',title="sample html")
