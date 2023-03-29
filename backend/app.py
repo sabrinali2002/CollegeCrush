@@ -65,7 +65,7 @@ def home():
     return render_template('base.html',title="sample html")
 
 @app.route("/colleges")
-def episodes_search():
+def college_search():
     text = request.args.get("title")
     with open('colleges.json','r') as f:
         data = json.load(f)
