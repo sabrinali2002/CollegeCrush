@@ -35,7 +35,7 @@ def sql_search(episode):
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys,i)) for i in data])
 
-def search_similarity(data, queries):
+def search_similarity(data, queries, size):
     arr = []
     inputs = queries.split(',')
     dic = {}
@@ -49,15 +49,14 @@ def search_similarity(data, queries):
     for i in inputs:
         if len(i) == 2:
             dic['state'] = i
-        elif i.upper() in region_dic:
-            dic['region'] = i.upper()
         else:
             dic['city'] = i
     for colleges in data:
-        if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and int(colleges['tot_enroll'])>1000:
-            arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
-        if queries.upper() == colleges['state']:
-            arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
+        if (size == "small" and colleges['tot_enroll'] <= 5000) or (size == "medium" and colleges['tot_enroll'] <= 15000) or (size == "large" and colleges['tot_enroll'] > 15000):
+            if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and int(colleges['tot_enroll'])>1000:
+                    arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
+            if queries.upper() == colleges['state']:
+                arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
     newlist = sorted(arr, key=lambda d: d['title']) 
     return newlist
 @app.route("/")
@@ -69,7 +68,7 @@ def college_search():
     text = request.args.get("title")
     with open('colleges.json','r') as f:
         data = json.load(f)
-    result = search_similarity(data, text)
+    result = search_similarity(data, text, request.args.get("size"))
     return result
 
 # app.run(debug=True)
