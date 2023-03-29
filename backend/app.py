@@ -73,7 +73,7 @@ def college_search():
     with open('file.csv', encoding='utf-8') as csvf:
         csvReader = csv.DictReader(csvf)
         for rows in csvReader:
-            key = rows['No']
+            key = rows['INSTNM']
             data2[key] = rows
     result = search_similarity(data, text, request.args.get("size"),request.args.get("region"))
     return result
