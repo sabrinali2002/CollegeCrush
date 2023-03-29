@@ -59,11 +59,11 @@
 
         <div class="q2">
             <label for="location">Select your preferred location:</label>
-            <select id="location">
+            <select id="location-input">
             <option value="">Choose One</option>
-            <option value="east-coast">East Coast</option>
+            <option value="east">East Coast</option>
             <option value="midwest">Midwest</option>
-            <option value="west-coast">West Coast</option>
+            <option value="west">West Coast</option>
             <option value="south">South</option>
             </select> <br><br>
         </div>
@@ -131,7 +131,18 @@
         function sendFocus(){
             document.getElementById('filter-text-val').focus()
         }
+        function filterRegion(){
+            document.getElementById("answer-box").innerHTML = ""
+            console.log(document.getElementById("filter-text-val").value)
+            fetch("/colleges?" + new URLSearchParams({ title: document.getElementById("location-input").value }).toString())
+            .then((response) => response.json())
+            .then((data) => data.forEach(row => {
+                let tempDiv = document.createElement("div")
+                tempDiv.innerHTML = answerBoxTemplate(row.title,row.location,row.website)
+                document.getElementById("answer-box").appendChild(tempDiv)
+            }));
     
+        }
         function filterText(){
             document.getElementById("answer-box").innerHTML = ""
             console.log(document.getElementById("filter-text-val").value)

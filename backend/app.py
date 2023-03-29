@@ -42,7 +42,7 @@ def search_similarity(data, queries):
     region_dic = {}
     region_dic['WEST'] = set(['WA','OR','ID','MT','WY','CA','NV','UT','AZ','NM','CO'])
     region_dic['MIDWEST'] = set(['ND','SD','NE','KS','MN','IA','MO','WI','IL','IN','MI','IN','OH'])
-    region_dic['NORTHEAST'] = set(['PA','NY','NJ','VT','NH','ME','MA','CT','RI'])
+    region_dic['EAST'] = set(['PA','NY','NJ','VT','NH','ME','MA','CT','RI'])
     region_dic['SOUTH'] = set(['TX','OK','AR','LA','MS','TN','KY','AL','GA', 'FL','WV',
                                'NC','VA','MD','DE','NC','SC'])
     print(inputs, file=sys.stderr)
