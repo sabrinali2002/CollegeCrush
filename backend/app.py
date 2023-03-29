@@ -40,10 +40,10 @@ def search_similarity(data, queries, size,region):
     inputs = queries.split(',')
     dic = {}
     region_dic = {}
-    region_dic['WEST'] = set(['WA','OR','ID','MT','WY','CA','NV','UT','AZ','NM','CO'])
-    region_dic['MIDWEST'] = set(['ND','SD','NE','KS','MN','IA','MO','WI','IL','IN','MI','IN','OH'])
-    region_dic['EAST'] = set(['PA','NY','NJ','VT','NH','ME','MA','CT','RI'])
-    region_dic['SOUTH'] = set(['TX','OK','AR','LA','MS','TN','KY','AL','GA', 'FL','WV',
+    region_dic['east'] = set(['WA','OR','ID','MT','WY','CA','NV','UT','AZ','NM','CO'])
+    region_dic['midwest'] = set(['ND','SD','NE','KS','MN','IA','MO','WI','IL','IN','MI','IN','OH'])
+    region_dic['east'] = set(['PA','NY','NJ','VT','NH','ME','MA','CT','RI'])
+    region_dic['south'] = set(['TX','OK','AR','LA','MS','TN','KY','AL','GA', 'FL','WV',
                                'NC','VA','MD','DE','NC','SC'])
     print(inputs, file=sys.stderr)
     for i in inputs:
@@ -51,8 +51,9 @@ def search_similarity(data, queries, size,region):
             dic['state'] = i
         else:
             dic['city'] = i
+    s = set(['small','medium','large'])
     for colleges in data:
-        if (size != "small" and size != "medium" and size != "large") or (size == "small" and int(colleges['tot_enroll']) <= 5000) or (size == "medium" and int(colleges['tot_enroll']) <= 15000 and int(colleges['tot_enroll']) >= 5000) or (size == "large" and int(colleges['tot_enroll']) > 15000):
+        if (size in s) or (size == "small" and int(colleges['tot_enroll']) <= 5000) or (size == "medium" and int(colleges['tot_enroll']) <= 15000 and int(colleges['tot_enroll']) >= 5000) or (size == "large" and int(colleges['tot_enroll']) > 15000):
             if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and int(colleges['tot_enroll'])>1000:
                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'enrolled':colleges['tot_enroll'],'website': colleges['website']}))
             if queries.upper() == colleges['state']:
