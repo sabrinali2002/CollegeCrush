@@ -25,11 +25,11 @@
 
     <script>
 
-        function answerBoxTemplate(title,website, enrolled){
+        function answerBoxTemplate(title,location,website){
             return `<div><div style="width: auto; margin-left: auto; margin-right: auto">
                 <h2 class='episode-title'>${title}</h2>
+                <h4> location: ${location}</h4>
                 <p>${website}</p>
-                <h4> enrolled: ${enrolled}</h4>
                 </div>
             </div>`
         }
@@ -46,7 +46,7 @@
             .then((data) => data.forEach(row => {
                 
                 let tempDiv = document.createElement("div")
-                tempDiv.innerHTML = answerBoxTemplate(row.title,row.website, row.enrolled)
+                tempDiv.innerHTML = answerBoxTemplate(row.title,row.location,row.website)
                 document.getElementById("answer-box").appendChild(tempDiv)
             }));
 
