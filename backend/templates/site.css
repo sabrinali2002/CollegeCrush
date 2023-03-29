@@ -6,11 +6,11 @@
     padding: 0;
   }
   
-  body {
+body {
     background-color: #f8f8f8;
-  }
+}
   
-  header {
+header {
     background-color: #89cff9;
     color: #fff;
     display: flex;
@@ -18,7 +18,7 @@
     align-items: center;
     padding: 1rem;
     outline: 5px dotted black
-  }
+}
   
   nav ul {
     display: flex;
