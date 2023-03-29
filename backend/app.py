@@ -35,7 +35,7 @@ def sql_search(episode):
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys,i)) for i in data])
 
-def search_similarity(data, queries, size,region):
+def search_similarity(data, queries, size,region,sort_input):
     arr = []
     inputs = queries.split(',')
     dic = {}
@@ -71,7 +71,7 @@ def college_search():
     with open('colleges.json','r') as f:
         data = json.load(f)
     data2 = {}
-    result = search_similarity(data, text, request.args.get("size"),request.args.get("region"))
+    result = search_similarity(data, text, request.args.get("size"),request.args.get("region"),request.args.get("sort_input") )
     return result
 
 # app.run(debug=True)

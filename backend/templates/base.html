@@ -106,6 +106,15 @@
                 <input placeholder="Search for your ideal college match!" id="filter-text-val"">
             <br><br>
         </div>
+        <div class="q5">
+            <label for="sort">Sort By:</label>
+            <select id="sort_input">
+            <option value="">Choose One</option>
+            <option value="Alphabetical">Alphabetical</option>
+            <option value="Location">Location</option>
+            <option value="Enrollment Size">Enrollment Size</option>
+            </select> <br><br>
+        </div>
           </form>
         <button type="submit" onclick="filterText()">Find My Matches</button>
         <br>    
@@ -135,7 +144,7 @@
             document.getElementById("answer-box").innerHTML = ""
             console.log(document.getElementById("filter-text-val").value)
             fetch("/colleges?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value, size: document.getElementById("size").value,
-        location: document.getElementById("location")}).toString())
+        location: document.getElementById("location"), sort: document.getElementById("sort_input")}).toString())
             .then((response) => response.json())
             .then((data) => data.forEach(row => { 
                 let tempDiv = document.createElement("div")
