@@ -107,7 +107,7 @@
             <br><br>
         </div>
         <div class="q5">
-            <label for="sort">Sort By:</label>
+            <label for="sort_input">Sort By:</label>
             <select id="sort_input">
             <option value="">Choose One</option>
             <option value="Alphabetical">Alphabetical</option>
@@ -144,7 +144,7 @@
             document.getElementById("answer-box").innerHTML = ""
             console.log(document.getElementById("filter-text-val").value)
             fetch("/colleges?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value, size: document.getElementById("size").value,
-        location: document.getElementById("location"), sort: document.getElementById("sort_input")}).toString())
+        location: document.getElementById("location"), sort: document.getElementById("sort_input").value}).toString())
             .then((response) => response.json())
             .then((data) => data.forEach(row => { 
                 let tempDiv = document.createElement("div")
