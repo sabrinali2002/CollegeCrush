@@ -100,16 +100,14 @@
             </script>
             </div>
             </div>
-
+            <div class="input-box" onclick="sendFocus()">
+                <input placeholder="Search for your ideal college match!" id="filter-text-val" onkeyup="filterText()">
+            </div>
             <button type="submit">Find My Matches</button>
           </form>
 
 
         <br>    
-        <div class="input-box" onclick="sendFocus()">
-            <img src="{{ url_for('static', filename='images/mag.png') }}" />
-            <input placeholder="Search for your ideal college match!" id="filter-text-val" onkeyup="filterText()">
-        </div>
         <div id="answer-box">
 
         </div>
