@@ -130,22 +130,10 @@
         function sendFocus(){
             document.getElementById('filter-text-val').focus()
         }
-        function filterRegion(){
-            document.getElementById("answer-box").innerHTML = ""
-            console.log(document.getElementById("filter-text-val").value)
-            fetch("/colleges?" + new URLSearchParams({ title: document.getElementById("location-input").value }).toString())
-            .then((response) => response.json())
-            .then((data) => data.forEach(row => {
-                let tempDiv = document.createElement("div")
-                tempDiv.innerHTML = answerBoxTemplate(row.title,row.location,row.website)
-                document.getElementById("answer-box").appendChild(tempDiv)
-            }));
-    
-        }
         function filterText(){
             document.getElementById("answer-box").innerHTML = ""
             console.log(document.getElementById("filter-text-val").value)
-            fetch("/colleges?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
+            fetch("/colleges?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value, size: document.getElementById("size").value}).toString())
             .then((response) => response.json())
             .then((data) => data.forEach(row => {
                 
