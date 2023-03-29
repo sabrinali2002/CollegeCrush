@@ -54,7 +54,7 @@ def search_similarity(data, queries, size,region,sort_input):
     s = set(['small','medium','large'])
     for colleges in data:
         if (size not in s) or (size == "small" and int(colleges['tot_enroll']) <= 5000) or (size == "medium" and int(colleges['tot_enroll']) <= 15000 and int(colleges['tot_enroll']) >= 5000) or (size == "large" and int(colleges['tot_enroll']) > 15000):
-            if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and int(colleges['tot_enroll'])>1000:
+            if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and int(colleges['tot_enroll'])>0:
                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'enrolled':colleges['tot_enroll'],'website': colleges['website']}))
             if queries.upper() == colleges['state']:
                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'enrolled':colleges['tot_enroll'],'website': colleges['website']}))
