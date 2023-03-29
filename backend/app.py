@@ -58,8 +58,6 @@ def search_similarity(data, queries):
             arr.append(({'title': colleges['name'], 'Location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
         if queries == colleges['state']:
             arr.append(({'title': colleges['name'], 'Location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
-        if dic['region'].upper() in region_dic and colleges['state'] in region_dic[queries]:
-            arr.append(({'title': colleges['name'], 'Location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
 
     newlist = sorted(arr, key=lambda d: d['title']) 
     return newlist
