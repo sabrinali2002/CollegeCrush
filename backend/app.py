@@ -54,7 +54,7 @@ def search_similarity(data, queries):
         else:
             dic['city'] = i
     for colleges in data:
-        if 'city' in colleges and 'city' in dic and colleges['city'].lower() == queries.lower() and int(colleges['tot_enroll'])>1000:
+        if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and int(colleges['tot_enroll'])>1000:
             arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
         if queries == colleges['state']:
             arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
