@@ -69,6 +69,12 @@ def college_search():
     text = request.args.get("title")
     with open('colleges.json','r') as f:
         data = json.load(f)
+    data2 = {}
+    with open('file.csv', encoding='utf-8') as csvf:
+        csvReader = csv.DictReader(csvf)
+        for rows in csvReader:
+            key = rows['No']
+            data[key] = rows
     result = search_similarity(data, text, request.args.get("size"),request.args.get("region"))
     return result
 
