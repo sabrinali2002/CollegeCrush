@@ -118,10 +118,11 @@
     </footer>
     <script>
 
-        function answerBoxTemplate(title,location,website){
+        function answerBoxTemplate(title,location,enrolled,website){
             return `<div><div>
                 <h2 class='episode-title'>${title}</h2>
                 <h4> Location: ${location}</h4>
+                <h5> Students enrolled: ${enrolled}</h5>
                 <p>${website}</p>
                 </div>
             </div>`
@@ -138,7 +139,7 @@
             .then((data) => data.forEach(row => {
                 
                 let tempDiv = document.createElement("div")
-                tempDiv.innerHTML = answerBoxTemplate(row.title,row.location,row.website)
+                tempDiv.innerHTML = answerBoxTemplate(row.title,row.location,row.enrolled,row.website)
                 document.getElementById("answer-box").appendChild(tempDiv)
             }));
     
