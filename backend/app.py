@@ -54,7 +54,7 @@ def search_similarity(data, queries):
         else:
             dic['city'] = i
     arr.append(({'title': "", 'location': "", "website": str(inputs)}))
-    return newlist
+    return arr
 @app.route("/")
 def home():
     return render_template('base.html',title="sample html")
