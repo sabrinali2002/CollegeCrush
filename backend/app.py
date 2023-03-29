@@ -52,11 +52,10 @@ def search_similarity(data, queries, size):
         else:
             dic['city'] = i
     for colleges in data:
-        if (size == "small" and colleges['tot_enroll'] <= 5000) or (size == "medium" and colleges['tot_enroll'] <= 15000) or (size == "large" and colleges['tot_enroll'] > 15000):
-            if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and int(colleges['tot_enroll'])>1000:
-                    arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
-            if queries.upper() == colleges['state']:
-                arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
+        if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and int(colleges['tot_enroll'])>1000:
+            arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
+        if queries.upper() == colleges['state']:
+            arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'website': colleges['website']}))
     newlist = sorted(arr, key=lambda d: d['title']) 
     return newlist
 @app.route("/")
