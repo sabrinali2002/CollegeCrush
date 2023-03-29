@@ -53,7 +53,7 @@ def search_similarity(data, queries):
             dic['region'] = i.upper()
         else:
             dic['city'] = i
-    arr.append(({'title': "", 'location': "", "website": str(inputs)}))
+    arr.append(({'title': "", 'location': "", "website": str(dic)}))
     return arr
 @app.route("/")
 def home():
