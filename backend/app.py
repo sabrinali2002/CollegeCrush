@@ -49,11 +49,14 @@ def search_similarity(data, queries):
     for i in inputs:
         if len(i) == 2:
             dic['state'] = i
+        elif i.upper() in region_dic:
+            dic['region'] = i.upper()
         else:
             dic['city'] = i
     for colleges in data:
-        if queries in region_dic and colleges['state'] in region_dic[queries]:
+        if dic['region'] in region_dic and colleges['state'] in region_dic[queries]:
             arr.append(({'title': colleges['name'], 'website': colleges['website'],'enrolled': colleges['tot_enroll']}))
+
     newlist = sorted(arr, key=lambda d: d['title']) 
     return newlist
 @app.route("/")
