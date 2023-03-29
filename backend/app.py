@@ -58,8 +58,14 @@ def search_similarity(data, queries, size,region,sort_input):
                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'enrolled':colleges['tot_enroll'],'website': colleges['website']}))
             if queries.upper() == colleges['state']:
                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", "+colleges['state'],'enrolled':colleges['tot_enroll'],'website': colleges['website']}))
-
-    newlist = sorted(arr, key=lambda d: d['title']) 
+    if sort_input == "Alphabetical":
+        newlist = sorted(arr, key=lambda d: d['title'])
+    elif sort_input == "Location":
+        newlist = sorted(arr, key=lambda d: d['location'])
+    elif sort_input == "Enrollment Size":
+        newlist = sorted(arr, key=lambda d: d['enrolled'])
+    else:
+        newlist = sorted(arr, key=lambda d: d['title']) 
     return newlist
 @app.route("/")
 def home():
