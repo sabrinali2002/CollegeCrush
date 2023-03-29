@@ -63,7 +63,7 @@ def search_similarity(data, queries, size,region,sort_input):
     elif sort_input == "Location":
         newlist = sorted(arr, key=lambda d: d['location'])
     elif sort_input == "Enrollment Size":
-        newlist = sorted(arr, key=lambda d: d['enrolled'])
+        newlist = sorted(arr, key=lambda d: int(d['enrolled']))
     else:
         newlist = sorted(arr, key=lambda d: d['title']) 
     return newlist
