@@ -1,6 +1,7 @@
 import json
 import os
 import csv
+import sys
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
@@ -44,6 +45,7 @@ def search_similarity(data, queries):
     region_dic['NORTHEAST'] = set(['PA','NY','NJ','VT','NH','ME','MA','CT','RI'])
     region_dic['SOUTH'] = set(['TX','OK','AR','LA','MS','TN','KY','AL','GA', 'FL','WV',
                                'NC','VA','MD','DE','NC','SC'])
+    print(inputs, file=sys.stderr)
     for i in inputs:
         if len(i) == 2:
             dic['state'] = i
