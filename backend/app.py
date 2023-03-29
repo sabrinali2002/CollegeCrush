@@ -77,7 +77,7 @@ def college_search():
     with open('colleges.json','r') as f:
         data = json.load(f)
     data2 = {}
-    result = search_similarity(data, text, request.args.get("size"),request.args.get("region"),request.args.get("sort_input") )
+    result = search_similarity(data, text, request.args.get("size"),request.args.get("region"),request.args.get("sort") )
     return result
 
 # app.run(debug=True)
