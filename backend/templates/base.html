@@ -134,10 +134,10 @@
         function filterText(){
             document.getElementById("answer-box").innerHTML = ""
             console.log(document.getElementById("filter-text-val").value)
-            fetch("/colleges?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value, size: document.getElementById("size").value}).toString())
+            fetch("/colleges?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value, size: document.getElementById("size").value,
+        location: document.getElementById("location")}).toString())
             .then((response) => response.json())
-            .then((data) => data.forEach(row => {
-                
+            .then((data) => data.forEach(row => { 
                 let tempDiv = document.createElement("div")
                 tempDiv.innerHTML = answerBoxTemplate(row.title,row.location,row.enrolled,row.website)
                 document.getElementById("answer-box").appendChild(tempDiv)
