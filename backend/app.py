@@ -24,8 +24,7 @@ mysql_engine = MySQLDatabaseHandler(
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
 mysql_engine.load_file_into_db()
 
-# app = Flask(__name__)
-app = Flask(__name__, static_folder="../templates")  # render template
+app = Flask(__name__)
 CORS(app)
 
 # Sample search, the LIKE operator in this case is hard-coded,
@@ -94,5 +93,6 @@ def college_search():
     result = search_similarity(data, text, request.args.get(
         "size"), request.args.get("region"), request.args.get("sort"))
     return result
+
 
 # app.run(debug=True)
