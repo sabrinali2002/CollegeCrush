@@ -14,7 +14,6 @@ os.environ["ROOT_PATH"] = os.path.abspath(os.path.join("..", os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "CollegeCrush"
 
@@ -36,7 +35,11 @@ CORS(app)
 def sql_search(episode):
     query_sql = f"""SELECT * FROM episodes WHERE LOWER( title ) LIKE '%%{episode.lower()}%%' limit 10"""
     keys = ["id", "title", "descr"]
+def sql_search(state):
+    query_sql = f"""SELECT * FROM colleges WHERE state LIKE '%%{state}%%'"""
+    keys = ["name", "city", "state"]
     data = mysql_engine.query_selector(query_sql)
+    print(json.dumps([dict(zip(keys, i)) for i in data]))
     return json.dumps([dict(zip(keys, i)) for i in data])
 
 
