@@ -14,7 +14,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+MYSQL_USER_PASSWORD = "Xuannhi230902!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "kardashiandb"
 
@@ -64,10 +64,10 @@ def search_similarity(data, queries, size, region, sort_input):
         if (size not in s) or (size == "small" and e <= 5000) or (size == "medium" and e <= 15000 and e >= 5000) or (size == "large" and e > 15000):
             if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and e > 0:
                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
-                           colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': https: // www.adelphi.edu}))
+                           colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
             if queries.upper() == colleges['state'] and int(colleges['tot_enroll']) > 0:
                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
-                           colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': https: // www.adelphi.edu}))
+                           colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
     if sort_input == "Alphabetical":
         newlist = sorted(arr, key=lambda d: d['title'])
     elif sort_input == "Location":
@@ -95,4 +95,4 @@ def college_search():
     return result
 
 
-# app.run(debug=True)
+app.run(debug=True)
