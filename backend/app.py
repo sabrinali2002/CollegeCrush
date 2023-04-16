@@ -1,6 +1,5 @@
 import json
 import os
-import webbrowser
 import csv
 import sys
 from flask import Flask, render_template, request
@@ -63,8 +62,7 @@ def search_similarity(data, queries, size, region, sort_input):
     for colleges in data:
         e = int(colleges['tot_enroll'])
         if (size not in s) or (size == "small" and e <= 5000) or (size == "medium" and e <= 15000 and e >= 5000) or (size == "large" and e > 15000):
-
-           if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and e > 0:
+            if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and e > 0:
                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
                            colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
             if queries.upper() == colleges['state'] and int(colleges['tot_enroll']) > 0:
@@ -86,10 +84,6 @@ def home():
     return render_template('base.html', title="sample html")
 
 
-# @app.route("/episodes")
-# def episodes_search():
-#     text = request.args.get("title")
-#     return sql_search(text)
 @app.route("/colleges")
 def college_search():
     text = request.args.get("title")
