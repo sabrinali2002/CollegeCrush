@@ -19,23 +19,23 @@
 -- Table structure for table `college`
 --
 
-DROP TABLE IF EXISTS `college`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `college` (
-  `name` varchar(225) DEFAULT NULL,
-  `city` varchar(225) DEFAULT NULL,
-  `state` varchar(225) DEFAULT NULL,
-  `county` varchar(225) DEFAULT NULL,
-  `country` varchar(225) DEFAULT NULL,
-  `website` varchar(225) DEFAULT NULL,
-  `tot_enroll` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- DROP TABLE IF EXISTS `college`;
+-- /*!40101 SET @saved_cs_client     = @@character_set_client */;
+-- /*!50503 SET character_set_client = utf8mb4 */;
+-- CREATE TABLE `college` (
+--   `name` varchar(225) DEFAULT NULL,
+--   `city` varchar(225) DEFAULT NULL,
+--   `state` varchar(225) DEFAULT NULL,
+--   `county` varchar(225) DEFAULT NULL,
+--   `country` varchar(225) DEFAULT NULL,
+--   `website` varchar(225) DEFAULT NULL,
+--   `tot_enroll` int DEFAULT NULL
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Table structure for table `colleges`
---
+-- --
+-- -- Table structure for table `colleges`
+-- --
 
 DROP TABLE IF EXISTS `colleges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
