@@ -16,7 +16,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 MYSQL_USER = "root"
 MYSQL_USER_PASSWORD = "Xuannhi230902!"
 MYSQL_PORT = 3306
-MYSQL_DATABASE = "kardashiandb"
+MYSQL_DATABASE = "colleges"
 
 mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
@@ -32,9 +32,23 @@ CORS(app)
 # there's a much better and cleaner way to do this
 
 
-def sql_search(episode):
-    query_sql = f"""SELECT * FROM episodes WHERE LOWER( title ) LIKE '%%{episode.lower()}%%' limit 10"""
-    keys = ["id", "title", "descr"]
+# def sql_search(episode):
+#     query_sql = f"""SELECT * FROM episodes WHERE LOWER( title ) LIKE '%%{episode.lower()}%%' limit 10"""
+#     keys = ["id","title","descr"]
+#     data = mysql_engine.query_selector(query_sql)
+#     return json.dumps([dict(zip(keys,i)) for i in data])
+
+# @app.route("/")
+# def home():
+#     return render_template('base.html',title="sample html")
+
+# @app.route("/episodes")
+# def episodes_search():
+#     text = request.args.get("title")
+#     return sql_search(text)
+def sql_search(state):
+    query_sql = f"""SELECT * FROM colleges WHERE state ='%%{state}%%'"""
+    keys = ["name", "city", "state"]
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys, i)) for i in data])
 
@@ -86,13 +100,18 @@ def home():
 
 @app.route("/colleges")
 def college_search():
-    text = request.args.get("title")
-    with open('colleges.json', 'r') as f:
-        data = json.load(f)
-    data2 = {}
-    result = search_similarity(data, text, request.args.get(
-        "size"), request.args.get("region"), request.args.get("sort"))
+    text = request.args.get("location")
+    result = sql_search(text)
     return result
+# Sabrina's version
+# def college_search():
+#     text = request.args.get("title")
+#     with open('colleges.json', 'r') as f:
+#         data = json.load(f)
+#     data2 = {}
+#     result = search_similarity(data, text, request.args.get(
+#         "size"), request.args.get("region"), request.args.get("sort"))
+#     return result
 
 
 app.run(debug=True)
