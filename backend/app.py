@@ -64,10 +64,10 @@ def search_similarity(data, queries, size, region, sort_input):
         if (size not in s) or (size == "small" and e <= 5000) or (size == "medium" and e <= 15000 and e >= 5000) or (size == "large" and e > 15000):
             if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and e > 0:
                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
-                           colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
+                           colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': https: // www.adelphi.edu}))
             if queries.upper() == colleges['state'] and int(colleges['tot_enroll']) > 0:
                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
-                           colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
+                           colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': https: // www.adelphi.edu}))
     if sort_input == "Alphabetical":
         newlist = sorted(arr, key=lambda d: d['title'])
     elif sort_input == "Location":
