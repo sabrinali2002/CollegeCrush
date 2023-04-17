@@ -204,4 +204,4 @@ def college_search():
     return result
 
 
-# app.run(debug=True)
+app.run(debug=True)
