@@ -12,7 +12,11 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
+<<<<<<< Updated upstream
 MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+=======
+MYSQL_USER_PASSWORD = "Youyou0305!"
+>>>>>>> Stashed changes
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "kardashiandb"
 
@@ -27,9 +31,17 @@ CORS(app)
 # Sample search, the LIKE operator in this case is hard-coded, 
 # but if you decide to use SQLAlchemy ORM framework, 
 # there's a much better and cleaner way to do this
+<<<<<<< Updated upstream
 def sql_search(episode):
     query_sql = f"""SELECT * FROM episodes WHERE LOWER( title ) LIKE '%%{episode.lower()}%%' limit 10"""
     keys = ["id","title","descr"]
+=======
+
+
+def sql_search(state):
+    query_sql = f"""SELECT * FROM colleges WHERE LOWER (state) LIKE '%%{state}%%'"""
+    keys = ["name", "city", "state"]
+>>>>>>> Stashed changes
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys,i)) for i in data])
 
@@ -37,9 +49,34 @@ def sql_search(episode):
 def home():
     return render_template('base.html',title="sample html")
 
+<<<<<<< Updated upstream
 @app.route("/episodes")
 def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
+=======
+
+# @app.route("/colleges")
+# def college_search():
+#     text = request.args.get("title")
+#     with open("colleges.json", "r") as f:
+#         data = json.load(f)
+#     data2 = {}
+#     result = search_similarity(
+#         data,
+#         text,
+#         request.args.get("size"),
+#         request.args.get("region"),
+#         request.args.get("sort"),
+#     )
+#     return result
+
+
+@app.route("/colleges")
+def college_search():
+    text = request.args.get("location")
+    result = sql_search(text)
+    return result
+>>>>>>> Stashed changes
 
 # app.run(debug=True)
