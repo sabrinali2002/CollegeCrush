@@ -46,10 +46,15 @@ CORS(app)
 # def episodes_search():
 #     text = request.args.get("title")
 #     return sql_search(text)
+
+# search for school based on state
 def sql_search(state):
-    query_sql = f"""SELECT * FROM colleges WHERE state ='%%{state}%%'"""
-    keys = ["name", "city", "state"]
+    # query_sql = f"""SELECT * FROM colleges WHERE state ='%%{state.upper()}%%'"""
+    query_sql = f"""SELECT * FROM colleges WHERE state = state"""
+    # keys = ["name", "city", "state"]
     data = mysql_engine.query_selector(query_sql)
+    print(list(data))
+    # print(list(data))
     return json.dumps([dict(zip(keys, i)) for i in data])
 
 
@@ -100,8 +105,8 @@ def home():
 
 @app.route("/colleges")
 def college_search():
-    text = request.args.get("location")
-    result = sql_search(text)
+    text = request.args.get("title")
+    result = sql_search(text.upper())
     return result
 # Sabrina's version
 # def college_search():
