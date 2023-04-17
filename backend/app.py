@@ -47,13 +47,31 @@ CORS(app)
 #     text = request.args.get("title")
 #     return sql_search(text)
 
-# search for school based on state
-def sql_search(state):
-    # query_sql = f"""SELECT * FROM colleges WHERE state ='%%{state.upper()}%%'"""
+def sql_search(state_city, size, sort):
+    # region_dic = {}
+    # region_dic['east'] = set(
+    #     ['WA', 'OR', 'ID', 'MT', 'WY', 'CA', 'NV', 'UT', 'AZ', 'NM', 'CO'])
+    # region_dic['midwest'] = set(
+    #     ['ND', 'SD', 'NE', 'KS', 'MN', 'IA', 'MO', 'WI', 'IL', 'IN', 'MI', 'IN', 'OH'])
+    # region_dic['west'] = set(
+    #     ['PA', 'NY', 'NJ', 'VT', 'NH', 'ME', 'MA', 'CT', 'RI'])
+    # region_dic['south'] = set(['TX', 'OK', 'AR', 'LA', 'MS', 'TN', 'KY', 'AL', 'GA', 'FL', 'WV',
+    #                            'NC', 'VA', 'MD', 'DE', 'NC', 'SC'])
     lst = []
-    query_sql = f"""SELECT * FROM colleges WHERE state = '{state}'"""
-    # keys = ["title", "location", "enrolled", "website"]
+    if size == 'small':
+        query_sql = f"""SELECT * FROM colleges WHERE ((state = '{state_city}' OR city = '{state_city}') AND (tot_enroll < 5000))"""
+    elif size == 'medium':
+        query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll BETWEEN 5000 AND 15000))"""
+    elif size == 'large':
+        query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll > 15000))"""
+    # if state in region_dic['east']:
+    # elif state in region_dic['midwest']:
+    # elif state in region_dic['west']:
+    # elif state in region_dic['west']:
     data = mysql_engine.query_selector(query_sql)
+    # query_sql_test = f"""SELECT * FROM data WHERE state = '{NY}'"""
+    # data = mysql_engine.query_selector(query_sql_test)
+    # print(list(data))
     for elem in list(data):
         name = elem[0]
         city = elem[1]
@@ -62,48 +80,13 @@ def sql_search(state):
         enroll = elem[6]
         lst.append(({'title': name, 'location': city + ", "+state,
                    'enrolled': enroll, 'website': website}))
-    # print(lst)
+    if sort == "Alphabetical":
+        lst = sorted(lst, key=lambda d: d['title'])
+    # elif sort_input == "Location":  #maybe we could incorporate text comparison element here
+    #     lst = sorted(arr, key=lambda d: d['location'])
+    elif sort == "Enrollment Size":
+        lst = sorted(lst, key=lambda d: int(d['enrolled']))
     return lst
-
-
-# def search_similarity(data, queries, size, region, sort_input):
-#     arr = []
-#     inputs = queries.split(',')
-#     dic = {}
-#     region_dic = {}
-#     region_dic['east'] = set(
-#         ['WA', 'OR', 'ID', 'MT', 'WY', 'CA', 'NV', 'UT', 'AZ', 'NM', 'CO'])
-#     region_dic['midwest'] = set(
-#         ['ND', 'SD', 'NE', 'KS', 'MN', 'IA', 'MO', 'WI', 'IL', 'IN', 'MI', 'IN', 'OH'])
-#     region_dic['west'] = set(
-#         ['PA', 'NY', 'NJ', 'VT', 'NH', 'ME', 'MA', 'CT', 'RI'])
-#     region_dic['south'] = set(['TX', 'OK', 'AR', 'LA', 'MS', 'TN', 'KY', 'AL', 'GA', 'FL', 'WV',
-#                                'NC', 'VA', 'MD', 'DE', 'NC', 'SC'])
-#     print(inputs, file=sys.stderr)
-#     for i in inputs:
-#         if len(i) == 2:
-#             dic['state'] = i
-#         else:
-#             dic['city'] = i
-#     s = set(['small', 'medium', 'large'])
-#     for colleges in data:
-#         e = int(colleges['tot_enroll'])
-#         if (size not in s) or (size == "small" and e <= 5000) or (size == "medium" and e <= 15000 and e >= 5000) or (size == "large" and e > 15000):
-#             if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and e > 0:
-#                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
-#                            colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
-#             if queries.upper() == colleges['state'] and int(colleges['tot_enroll']) > 0:
-#                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
-#                            colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
-#     if sort_input == "Alphabetical":
-#         newlist = sorted(arr, key=lambda d: d['title'])
-#     elif sort_input == "Location":
-#         newlist = sorted(arr, key=lambda d: d['location'])
-#     elif sort_input == "Enrollment Size":
-#         newlist = sorted(arr, key=lambda d: int(d['enrolled']))
-#     else:
-#         newlist = sorted(arr, key=lambda d: d['title'])
-#     return newlist
 
 
 @app.route("/")
@@ -113,18 +96,11 @@ def home():
 
 @app.route("/colleges")
 def college_search():
-    text = request.args.get("title")
-    result = sql_search(text.upper())
+    state_city = request.args.get("title")
+    size = request.args.get("size")
+    result = sql_search(state_city.upper(), size, request.args.get(
+        "sort"))
     return result
-# Sabrina's version
-# def college_search():
-#     text = request.args.get("title")
-#     with open('colleges.json', 'r') as f:
-#         data = json.load(f)
-#     data2 = {}
-#     result = search_similarity(data, text, request.args.get(
-#         "size"), request.args.get("region"), request.args.get("sort"))
-#     return result
 
 
 app.run(debug=True)
