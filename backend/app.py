@@ -48,15 +48,6 @@ CORS(app)
 #     return sql_search(text)
 
 def sql_search(state_city, size, sort):
-    # region_dic = {}
-    # region_dic['east'] = set(
-    #     ['WA', 'OR', 'ID', 'MT', 'WY', 'CA', 'NV', 'UT', 'AZ', 'NM', 'CO'])
-    # region_dic['midwest'] = set(
-    #     ['ND', 'SD', 'NE', 'KS', 'MN', 'IA', 'MO', 'WI', 'IL', 'IN', 'MI', 'IN', 'OH'])
-    # region_dic['west'] = set(
-    #     ['PA', 'NY', 'NJ', 'VT', 'NH', 'ME', 'MA', 'CT', 'RI'])
-    # region_dic['south'] = set(['TX', 'OK', 'AR', 'LA', 'MS', 'TN', 'KY', 'AL', 'GA', 'FL', 'WV',
-    #                            'NC', 'VA', 'MD', 'DE', 'NC', 'SC'])
     lst = []
     if size == 'small':
         query_sql = f"""SELECT * FROM colleges WHERE ((state = '{state_city}' OR city = '{state_city}') AND (tot_enroll < 5000))"""
@@ -64,14 +55,61 @@ def sql_search(state_city, size, sort):
         query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll BETWEEN 5000 AND 15000))"""
     elif size == 'large':
         query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll > 15000))"""
-    # if state in region_dic['east']:
-    # elif state in region_dic['midwest']:
-    # elif state in region_dic['west']:
-    # elif state in region_dic['west']:
     data = mysql_engine.query_selector(query_sql)
-    # query_sql_test = f"""SELECT * FROM data WHERE state = '{NY}'"""
-    # data = mysql_engine.query_selector(query_sql_test)
-    # print(list(data))
+    for elem in list(data):
+        name = elem[0]
+        city = elem[1]
+        state = elem[2]
+        website = elem[5]
+        enroll = elem[6]
+        lst.append(({'title': name, 'location': city + ", "+state,
+                   'enrolled': enroll, 'website': website}))
+    if sort == "Alphabetical":
+        lst = sorted(lst, key=lambda d: d['title'])
+    # elif sort_input == "Location":  #maybe we could incorporate text comparison element here
+    #     lst = sorted(arr, key=lambda d: d['location'])
+    elif sort == "Enrollment Size":
+        lst = sorted(lst, key=lambda d: int(d['enrolled']))
+    return lst
+
+
+def sql_search2(region, size, sort):
+    lst = []
+    if size == 'small':
+        if region == 'midwest':
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'IL' OR state = 'IN' OR state = 'MI'  OR state = 'OH' OR state = 'ND' OR state = 'SD' OR state = 'NE' OR state = 'KS' OR state = 'MN' OR state = 'IA' OR state = 'MO' OR state = 'WI') AND (tot_enroll < 5000))"""
+        elif region == 'southwest':
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'TX' OR state = 'OK' OR state = 'NM' OR state ='AZ') AND (tot_enroll < 5000))"""
+        elif region == 'west':
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'AK' OR state = 'HI' OR state = 'CO' OR state = 'WY' OR state = 'MT' OR state ='WA' OR state ='NV' OR state = 'CA' OR state = 'ID' or state = 'OR' OR state = 'UT') AND (tot_enroll < 5000))"""
+        elif region == 'northeast':
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'DE' OR state = 'PA' OR state = 'NY' OR state = 'NJ' OR state = 'VT' OR state = 'NH' OR state = 'ME' OR state = 'MA' OR state = 'CT' OR state = 'RI' OR state = 'MD' ) AND (tot_enroll < 5000))"""
+        elif region == 'southeast':
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'WV' OR state = 'VA' OR state = 'KY' OR state = 'TN' OR state = 'NC' OR state ='SC' OR state ='GA' OR state = 'AL' OR state = 'MS' or state = 'AR' OR state = 'LA' OR state='FL') AND (tot_enroll < 5000))"""
+    elif size == 'medium':
+        if region == "midwest":
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'IL' OR state = 'IN' OR state = 'MI'  OR state = 'OH' OR state = 'ND' OR state = 'SD' OR state = 'NE' OR state = 'KS' OR state = 'MN' OR state = 'IA' OR state = 'MO' OR state = 'WI') AND (tot_enroll BETWEEN 5000 AND 15000))"""
+        elif region == "southwest":
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'TX' OR state = 'OK' OR state = 'NM' OR state ='AZ') AND (tot_enroll BETWEEN 5000 AND 15000))"""
+        elif region == "west":
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'AK' OR state = 'HI' OR state = 'CO' OR state = 'WY' OR state = 'MT' OR state ='WA' OR state ='NV' OR state = 'CA' OR state = 'ID' or state = 'OR' OR state = 'UT') AND (tot_enroll BETWEEN 5000 AND 15000))"""
+        elif region == "northeast":
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'DE' OR state = 'PA' OR state = 'NY' OR state = 'NJ'  OR state = 'VT' OR state = 'NH' OR state = 'ME' OR state = 'MA' OR state = 'CT' OR state = 'RI' OR state = 'MD' ) AND (tot_enroll BETWEEN 5000 AND 15000))"""
+        elif region == "southeast":
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'WV' OR state = 'VA' OR state = 'KY' OR state = 'TN' OR state = 'NC' OR state ='SC' OR state ='GA' OR state = 'AL' OR state = 'MS' or state = 'AR' OR state = 'LA' OR state='FL') AND (tot_enroll BETWEEN 5000 AND 15000))"""
+    elif size == 'large':
+        if region == "midwest":
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'IL' OR state = 'IN' OR state = 'MI'  OR state = 'OH' OR state = 'ND' OR state = 'SD' OR state = 'NE' OR state = 'KS' OR state = 'MN' OR state = 'IA' OR state = 'MO' OR state = 'WI') AND (tot_enroll > 15000))"""
+        elif region == "southwest":
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'TX' OR state = 'OK' OR state = 'NM' OR state ='AZ') AND (tot_enroll > 15000))"""
+        elif region == "west":
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'AK' OR state = 'HI' OR state = 'CO' OR state = 'WY' OR state = 'MT' OR state ='WA' OR state ='NV' OR state = 'CA' OR state = 'ID' or state = 'OR' OR state = 'UT') AND (tot_enroll > 15000))"""
+        elif region == "northeast":
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'DE' OR state = 'PA' OR state = 'NY' OR state = 'NJ'  OR state = 'VT' OR state = 'NH' OR state = 'ME' OR state = 'MA' OR state = 'CT' OR state = 'RI' OR state = 'MD' ) AND (tot_enroll > 15000))"""
+        elif region == "southeast":
+            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'WV' OR state = 'VA' OR state = 'KY' OR state = 'TN' OR state = 'NC' OR state ='SC' OR state ='GA' OR state = 'AL' OR state = 'MS' or state = 'AR' OR state = 'LA' OR state='FL') AND (tot_enroll > 15000))"""
+    print(query_sql)
+    data = mysql_engine.query_selector(query_sql)
     for elem in list(data):
         name = elem[0]
         city = elem[1]
@@ -98,8 +136,12 @@ def home():
 def college_search():
     state_city = request.args.get("title")
     size = request.args.get("size")
-    result = sql_search(state_city.upper(), size, request.args.get(
-        "sort"))
+    region = request.args.get("location")
+    print(region)
+    if state_city != "":
+        result = sql_search(state_city.upper(), size, request.args.get("sort"))
+    else:
+        result = sql_search2(region.lower(), size, request.args.get("sort"))
     return result
 
 

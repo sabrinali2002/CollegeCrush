@@ -58,16 +58,17 @@
         </select> <br><br>
       </div> -->
 
-      <!-- <div class="q2">
+      <div class="q2">
         <label for="location">Select your preferred location:</label>
         <select id="location-input">
           <option value="">Choose One</option>
-          <option value="east">East Coast</option>
+          <option value="northeast">Northeast</option>
+          <option value="southeast">Souththeast</option>
           <option value="midwest">Midwest</option>
-          <option value="west">West Coast</option>
-          <option value="south">South</option>
+          <option value="southwest">Southwest</option>
+          <option value="west">West</option>
         </select> <br><br>
-      </div> -->
+      </div>
 
       <div class="q3">
         <label for="size">Select your preferred school size:</label>
@@ -147,7 +148,7 @@
       console.log(document.getElementById("filter-text-val").value)
       fetch("/colleges?" + new URLSearchParams({
         title: document.getElementById("filter-text-val").value, size: document.getElementById("size").value,
-        location: document.getElementById("location"), sort: document.getElementById("sort_input").value
+        location: document.getElementById("location-input").value, sort: document.getElementById("sort_input").value
       }).toString())
         .then((response) => response.json())
         .then((data) => data.forEach(row => {
