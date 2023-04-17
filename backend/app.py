@@ -13,15 +13,15 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
-# MYSQL_USER = "root"
-# MYSQL_USER_PASSWORD = "Xuannhi230902!"
-# MYSQL_PORT = 3306
-# MYSQL_DATABASE = "colleges"
-
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+MYSQL_USER_PASSWORD = "Xuannhi230902!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "colleges"
+
+# MYSQL_USER = "root"
+# MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+# MYSQL_PORT = 3306
+# MYSQL_DATABASE = "colleges"
 mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
 
@@ -40,6 +40,8 @@ def sql_search(state_city, size, sort):
         query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll BETWEEN 5000 AND 15000))"""
     elif size == 'large':
         query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll > 15000))"""
+    else:
+        query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}')"""
     data = mysql_engine.query_selector(query_sql)
     for elem in list(data):
         name = elem[0]
@@ -93,6 +95,18 @@ def sql_search2(region, size, sort):
             query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND (tot_enroll > 15000)"""
         elif region == "southeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (tot_enroll > 15000)"""
+    else:
+        if region == "midwest":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI')"""
+        elif region == "southwest":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ')"""
+        elif region == "west":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT', 'WA','NV', 'CA','ID','OR','UT')"""
+        elif region == "northeast":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD')"""
+        elif region == "southeast":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL')"""
+
     data = mysql_engine.query_selector(query_sql)
     for elem in list(data):
         name = elem[0]
@@ -139,13 +153,24 @@ def sql_search3(state_city, region, size, sort):
         if region == "midwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (tot_enroll > 15000) AND (state = '{state_city}' OR city = '{state_city}')"""
         elif region == "southwest":
-            query_sql = f"""SELECT * FROM colleges WHERE state IN(TX','OK','NM','AZ') AND (tot_enroll BETWEEN 5000 AND 15000) AND (tot_enroll > 15000) AND (state = '{state_city}' OR city = '{state_city}')"""
+            query_sql = f"""SELECT * FROM colleges WHERE state IN(TX','OK','NM','AZ') AND (tot_enroll > 15000) AND (state = '{state_city}' OR city = '{state_city}')"""
         elif region == "west":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT','WA','NV','CA','ID','OR','UT') AND (tot_enroll > 15000) AND (state = '{state_city}' OR city = '{state_city}')"""
         elif region == "northeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD' ) AND (tot_enroll > 15000) AND (state = '{state_city}' OR city = '{state_city}')"""
         elif region == "southeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (tot_enroll > 15000) AND (state = '{state_city}' OR city = '{state_city}')"""
+    else:
+        if region == "midwest":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (state = '{state_city}' OR city = '{state_city}')"""
+        elif region == "southwest":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN(TX','OK','NM','AZ') AND (state = '{state_city}' OR city = '{state_city}')"""
+        elif region == "west":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT','WA','NV','CA','ID','OR','UT') AND (state = '{state_city}' OR city = '{state_city}')"""
+        elif region == "northeast":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD' ) AND (state = '{state_city}' OR city = '{state_city}')"""
+        elif region == "southeast":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (state = '{state_city}' OR city = '{state_city}')"""
     data = mysql_engine.query_selector(query_sql)
     for elem in list(data):
         name = elem[0]

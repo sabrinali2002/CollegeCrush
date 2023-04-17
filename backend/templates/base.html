@@ -59,7 +59,7 @@
       </div> -->
 
       <div class="q2">
-        <label for="location">Select your preferred location:</label>
+        <label for="location">Select your preferred region:</label>
         <select id="location-input">
           <option value="">Choose One</option>
           <option value="northeast">Northeast</option>
@@ -69,8 +69,13 @@
           <option value="west">West</option>
         </select> <br><br>
       </div>
-
       <div class="q3">
+        <label for="city">Input Your Preferred State or City:</label>
+        <input placeholder="Search for your ideal college match!" id="filter-text-val"">
+            <br><br>
+        </div>
+
+      <div class=" q3">
         <label for="size">Select your preferred school size:</label>
         <select id="size">
           <option value="">Choose One</option>
@@ -79,7 +84,15 @@
           <option value="large">Large (over 15,000 students)</option>
         </select> <br><br>
       </div>
-
+      <div class=" q5">
+        <label for="sort_input">Sort By:</label>
+        <select id="sort_input">
+          <option value="">Choose One</option>
+          <option value="Alphabetical">Alphabetical</option>
+          <option value="Location">Location</option>
+          <option value="Enrollment Size">Enrollment Size</option>
+        </select> <br><br>
+      </div>
       <!-- <div class="q4">
         <div class="size-slider">
           <label for="priceRange">College Price Range:</label>
@@ -103,7 +116,7 @@
         </div> -->
       <!-- <br>
       </div> -->
-      <div class="q3">
+      <!-- <div class="q3">
         <label for="city">Input Your Preferred State or City:</label>
         <input placeholder="Search for your ideal college match!" id="filter-text-val"">
             <br><br>
@@ -116,7 +129,7 @@
           <option value="Location">Location</option>
           <option value="Enrollment Size">Enrollment Size</option>
         </select> <br><br>
-      </div>
+      </div> -->
     </form>
     <button type="submit" onclick="filterText()">Find My Matches</button>
     <br>
