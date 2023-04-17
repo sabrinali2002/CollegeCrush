@@ -50,52 +50,60 @@ CORS(app)
 # search for school based on state
 def sql_search(state):
     # query_sql = f"""SELECT * FROM colleges WHERE state ='%%{state.upper()}%%'"""
-    query_sql = f"""SELECT * FROM colleges WHERE state = state"""
-    # keys = ["name", "city", "state"]
+    lst = []
+    query_sql = f"""SELECT * FROM colleges WHERE state = '{state}'"""
+    # keys = ["title", "location", "enrolled", "website"]
     data = mysql_engine.query_selector(query_sql)
-    print(list(data))
-    # print(list(data))
-    return json.dumps([dict(zip(keys, i)) for i in data])
+    for elem in list(data):
+        name = elem[0]
+        city = elem[1]
+        state = elem[2]
+        website = elem[5]
+        enroll = elem[6]
+        lst.append(({'title': name, 'location': city + ", "+state,
+                   'enrolled': enroll, 'website': website}))
+    # print(lst)
+    return lst
 
 
-def search_similarity(data, queries, size, region, sort_input):
-    arr = []
-    inputs = queries.split(',')
-    dic = {}
-    region_dic = {}
-    region_dic['east'] = set(
-        ['WA', 'OR', 'ID', 'MT', 'WY', 'CA', 'NV', 'UT', 'AZ', 'NM', 'CO'])
-    region_dic['midwest'] = set(
-        ['ND', 'SD', 'NE', 'KS', 'MN', 'IA', 'MO', 'WI', 'IL', 'IN', 'MI', 'IN', 'OH'])
-    region_dic['west'] = set(
-        ['PA', 'NY', 'NJ', 'VT', 'NH', 'ME', 'MA', 'CT', 'RI'])
-    region_dic['south'] = set(['TX', 'OK', 'AR', 'LA', 'MS', 'TN', 'KY', 'AL', 'GA', 'FL', 'WV',
-                               'NC', 'VA', 'MD', 'DE', 'NC', 'SC'])
-    print(inputs, file=sys.stderr)
-    for i in inputs:
-        if len(i) == 2:
-            dic['state'] = i
-        else:
-            dic['city'] = i
-    s = set(['small', 'medium', 'large'])
-    for colleges in data:
-        e = int(colleges['tot_enroll'])
-        if (size not in s) or (size == "small" and e <= 5000) or (size == "medium" and e <= 15000 and e >= 5000) or (size == "large" and e > 15000):
-            if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and e > 0:
-                arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
-                           colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
-            if queries.upper() == colleges['state'] and int(colleges['tot_enroll']) > 0:
-                arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
-                           colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
-    if sort_input == "Alphabetical":
-        newlist = sorted(arr, key=lambda d: d['title'])
-    elif sort_input == "Location":
-        newlist = sorted(arr, key=lambda d: d['location'])
-    elif sort_input == "Enrollment Size":
-        newlist = sorted(arr, key=lambda d: int(d['enrolled']))
-    else:
-        newlist = sorted(arr, key=lambda d: d['title'])
-    return newlist
+# def search_similarity(data, queries, size, region, sort_input):
+#     arr = []
+#     inputs = queries.split(',')
+#     dic = {}
+#     region_dic = {}
+#     region_dic['east'] = set(
+#         ['WA', 'OR', 'ID', 'MT', 'WY', 'CA', 'NV', 'UT', 'AZ', 'NM', 'CO'])
+#     region_dic['midwest'] = set(
+#         ['ND', 'SD', 'NE', 'KS', 'MN', 'IA', 'MO', 'WI', 'IL', 'IN', 'MI', 'IN', 'OH'])
+#     region_dic['west'] = set(
+#         ['PA', 'NY', 'NJ', 'VT', 'NH', 'ME', 'MA', 'CT', 'RI'])
+#     region_dic['south'] = set(['TX', 'OK', 'AR', 'LA', 'MS', 'TN', 'KY', 'AL', 'GA', 'FL', 'WV',
+#                                'NC', 'VA', 'MD', 'DE', 'NC', 'SC'])
+#     print(inputs, file=sys.stderr)
+#     for i in inputs:
+#         if len(i) == 2:
+#             dic['state'] = i
+#         else:
+#             dic['city'] = i
+#     s = set(['small', 'medium', 'large'])
+#     for colleges in data:
+#         e = int(colleges['tot_enroll'])
+#         if (size not in s) or (size == "small" and e <= 5000) or (size == "medium" and e <= 15000 and e >= 5000) or (size == "large" and e > 15000):
+#             if 'city' in dic and colleges['city'].lower() == dic['city'].lower() and e > 0:
+#                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
+#                            colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
+#             if queries.upper() == colleges['state'] and int(colleges['tot_enroll']) > 0:
+#                 arr.append(({'title': colleges['name'], 'location': colleges['city']+", " +
+#                            colleges['state'], 'enrolled': colleges['tot_enroll'], 'website': colleges['website']}))
+#     if sort_input == "Alphabetical":
+#         newlist = sorted(arr, key=lambda d: d['title'])
+#     elif sort_input == "Location":
+#         newlist = sorted(arr, key=lambda d: d['location'])
+#     elif sort_input == "Enrollment Size":
+#         newlist = sorted(arr, key=lambda d: int(d['enrolled']))
+#     else:
+#         newlist = sorted(arr, key=lambda d: d['title'])
+#     return newlist
 
 
 @app.route("/")
