@@ -81,15 +81,15 @@ def sql_search2(region, size, sort):
     lst = []
     if size == 'small':
         if region == 'midwest':
-            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'IL' OR state = 'IN' OR state = 'MI'  OR state = 'OH' OR state = 'ND' OR state = 'SD' OR state = 'NE' OR state = 'KS' OR state = 'MN' OR state = 'IA' OR state = 'MO' OR state = 'WI') AND (tot_enroll < 5000))"""
+            query_sql = f"""SELECT * FROM colleges WHERE (state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (tot_enroll < 5000))"""
         elif region == 'southwest':
-            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'TX' OR state = 'OK' OR state = 'NM' OR state ='AZ') AND (tot_enroll < 5000))"""
+            query_sql = f"""SELECT * FROM colleges WHERE (state IN('TX','OK','NM','AZ') AND (tot_enroll < 5000))"""
         elif region == 'west':
-            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'AK' OR state = 'HI' OR state = 'CO' OR state = 'WY' OR state = 'MT' OR state ='WA' OR state ='NV' OR state = 'CA' OR state = 'ID' or state = 'OR' OR state = 'UT') AND (tot_enroll < 5000))"""
+            query_sql = f"""SELECT * FROM colleges WHERE (state IN('AK','HI','CO','WY','MT', 'WA','NV', 'CA','ID','OR','UT') AND (tot_enroll < 5000))"""
         elif region == 'northeast':
-            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'DE' OR state = 'PA' OR state = 'NY' OR state = 'NJ' OR state = 'VT' OR state = 'NH' OR state = 'ME' OR state = 'MA' OR state = 'CT' OR state = 'RI' OR state = 'MD' ) AND (tot_enroll < 5000))"""
+            query_sql = f"""SELECT * FROM colleges WHERE (state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD')) AND (tot_enroll < 5000))"""
         elif region == 'southeast':
-            query_sql = f"""SELECT * FROM colleges WHERE ((state = 'WV' OR state = 'VA' OR state = 'KY' OR state = 'TN' OR state = 'NC' OR state ='SC' OR state ='GA' OR state = 'AL' OR state = 'MS' or state = 'AR' OR state = 'LA' OR state='FL') AND (tot_enroll < 5000))"""
+            query_sql = f"""SELECT * FROM colleges WHERE (state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (tot_enroll < 5000))"""
     elif size == 'medium':
         if region == "midwest":
             query_sql = f"""SELECT * FROM colleges WHERE ((state = 'IL' OR state = 'IN' OR state = 'MI'  OR state = 'OH' OR state = 'ND' OR state = 'SD' OR state = 'NE' OR state = 'KS' OR state = 'MN' OR state = 'IA' OR state = 'MO' OR state = 'WI') AND (tot_enroll BETWEEN 5000 AND 15000))"""
