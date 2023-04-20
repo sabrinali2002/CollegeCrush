@@ -146,8 +146,8 @@
       return `<div><div>
                 <h2 class='episode-title'>${title}</h2>
                 <h4> Location: ${location}</h4>
-                <h5> Students enrolled: ${enrolled}</h5>
-                <p>${website}</p>
+                <h4> Students enrolled: ${enrolled}</h5>  
+                <a href="${website}">Learn More!</a>      
   </div>
   </div>`
     }
@@ -166,6 +166,11 @@
         .then((response) => response.json())
         .then((data) => data.forEach(row => {
           let tempDiv = document.createElement("div")
+          // let website = row.website
+          // console.log(website)
+          // if (website.slice(0, 5) != "https") {
+          //   website = "https://".concat(str_website)
+          // }
           tempDiv.innerHTML = answerBoxTemplate(row.title, row.location, row.enrolled, row.website)
           document.getElementById("answer-box").appendChild(tempDiv)
         }));
