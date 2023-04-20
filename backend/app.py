@@ -8,7 +8,7 @@ from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
 
 # ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
-os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
+os.environ["ROOT_PATH"] = os.path.abspath(os.path.join("..", os.curdir))
 
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
@@ -19,12 +19,12 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # MYSQL_DATABASE = "colleges"
 
 MYSQL_USER = "root"
-# MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
-MYSQL_USER_PASSWORD = ""
+MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "kardashiandb"
 mysql_engine = MySQLDatabaseHandler(
-    MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
+    MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE
+)
 
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
 mysql_engine.load_file_into_db()
@@ -35,11 +35,11 @@ CORS(app)
 
 def sql_search(state_city, size, sort):
     lst = []
-    if size == 'small':
+    if size == "small":
         query_sql = f"""SELECT * FROM colleges WHERE ((state = '{state_city}' OR city = '{state_city}') AND (tot_enroll < 5000))"""
-    elif size == 'medium':
+    elif size == "medium":
         query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll BETWEEN 5000 AND 15000))"""
-    elif size == 'large':
+    elif size == "large":
         query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll > 15000))"""
     else:
         query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}')"""
@@ -50,31 +50,39 @@ def sql_search(state_city, size, sort):
         state = elem[2]
         website = elem[5]
         enroll = elem[6]
-        lst.append(({'title': name, 'location': city + ", "+state,
-                   'enrolled': enroll, 'website': website}))
+        lst.append(
+            (
+                {
+                    "title": name,
+                    "location": city + ", " + state,
+                    "enrolled": enroll,
+                    "website": website,
+                }
+            )
+        )
     if sort == "Alphabetical":
-        lst = sorted(lst, key=lambda d: d['title'])
+        lst = sorted(lst, key=lambda d: d["title"])
     # elif sort_input == "Location":  #maybe we could incorporate text comparison element here
     #     lst = sorted(arr, key=lambda d: d['location'])
     elif sort == "Enrollment Size":
-        lst = sorted(lst, key=lambda d: int(d['enrolled']))
+        lst = sorted(lst, key=lambda d: int(d["enrolled"]))
     return lst
 
 
 def sql_search2(region, size, sort):
     lst = []
-    if size == 'small':
-        if region == 'midwest':
+    if size == "small":
+        if region == "midwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (tot_enroll < 5000)"""
-        elif region == 'southwest':
+        elif region == "southwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') AND (tot_enroll < 5000)"""
-        elif region == 'west':
+        elif region == "west":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT', 'WA','NV', 'CA','ID','OR','UT') AND (tot_enroll < 5000)"""
-        elif region == 'northeast':
+        elif region == "northeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND (tot_enroll < 5000)"""
-        elif region == 'southeast':
+        elif region == "southeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (tot_enroll < 5000)"""
-    elif size == 'medium':
+    elif size == "medium":
         if region == "midwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (tot_enroll BETWEEN 5000 AND 15000)"""
         elif region == "southwest":
@@ -85,7 +93,7 @@ def sql_search2(region, size, sort):
             query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND (tot_enroll BETWEEN 5000 AND 15000)"""
         elif region == "southeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (tot_enroll BETWEEN 5000 AND 15000)"""
-    elif size == 'large':
+    elif size == "large":
         if region == "midwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (tot_enroll > 15000)"""
         elif region == "southwest":
@@ -100,7 +108,9 @@ def sql_search2(region, size, sort):
         if region == "midwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI')"""
         elif region == "southwest":
-            query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ')"""
+            query_sql = (
+                f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ')"""
+            )
         elif region == "west":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT', 'WA','NV', 'CA','ID','OR','UT')"""
         elif region == "northeast":
@@ -115,31 +125,39 @@ def sql_search2(region, size, sort):
         state = elem[2]
         website = elem[5]
         enroll = elem[6]
-        lst.append(({'title': name, 'location': city + ", "+state,
-                   'enrolled': enroll, 'website': website}))
+        lst.append(
+            (
+                {
+                    "title": name,
+                    "location": city + ", " + state,
+                    "enrolled": enroll,
+                    "website": website,
+                }
+            )
+        )
     if sort == "Alphabetical":
-        lst = sorted(lst, key=lambda d: d['title'])
+        lst = sorted(lst, key=lambda d: d["title"])
     # elif sort_input == "Location":  #maybe we could incorporate text comparison element here
     #     lst = sorted(arr, key=lambda d: d['location'])
     elif sort == "Enrollment Size":
-        lst = sorted(lst, key=lambda d: int(d['enrolled']))
+        lst = sorted(lst, key=lambda d: int(d["enrolled"]))
     return lst
 
 
 def sql_search3(state_city, region, size, sort):
     lst = []
-    if size == 'small':
-        if region == 'midwest':
+    if size == "small":
+        if region == "midwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (tot_enroll < 5000) AND (state = '{state_city}' OR city = '{state_city}')"""
-        elif region == 'southwest':
+        elif region == "southwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') AND (tot_enroll < 5000) AND (state = '{state_city}' OR city = '{state_city}')"""
-        elif region == 'west':
+        elif region == "west":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT','WA','NV','CA','ID','OR','UT') AND (tot_enroll < 5000) AND (state = '{state_city}' OR city = '{state_city}')"""
-        elif region == 'northeast':
+        elif region == "northeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND (tot_enroll < 5000) AND (state = '{state_city}' OR city = '{state_city}')"""
-        elif region == 'southeast':
+        elif region == "southeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (tot_enroll < 5000) AND (state = '{state_city}' OR city = '{state_city}')"""
-    elif size == 'medium':
+    elif size == "medium":
         if region == "midwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (tot_enroll BETWEEN 5000 AND 15000) AND (state = '{state_city}' OR city = '{state_city}')"""
         elif region == "southwest":
@@ -150,7 +168,7 @@ def sql_search3(state_city, region, size, sort):
             query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD' ) AND (tot_enroll BETWEEN 5000 AND 15000) AND (state = '{state_city}' OR city = '{state_city}')"""
         elif region == "southeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (tot_enroll BETWEEN 5000 AND 15000) AND (state = '{state_city}' OR city = '{state_city}')"""
-    elif size == 'large':
+    elif size == "large":
         if region == "midwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (tot_enroll > 15000) AND (state = '{state_city}' OR city = '{state_city}')"""
         elif region == "southwest":
@@ -179,20 +197,28 @@ def sql_search3(state_city, region, size, sort):
         state = elem[2]
         website = elem[5]
         enroll = elem[6]
-        lst.append(({'title': name, 'location': city + ", "+state,
-                   'enrolled': enroll, 'website': website}))
+        lst.append(
+            (
+                {
+                    "title": name,
+                    "location": city + ", " + state,
+                    "enrolled": enroll,
+                    "website": website,
+                }
+            )
+        )
     if sort == "Alphabetical":
-        lst = sorted(lst, key=lambda d: d['title'])
+        lst = sorted(lst, key=lambda d: d["title"])
     # elif sort_input == "Location":  #maybe we could incorporate text comparison element here
     #     lst = sorted(arr, key=lambda d: d['location'])
     elif sort == "Enrollment Size":
-        lst = sorted(lst, key=lambda d: int(d['enrolled']))
+        lst = sorted(lst, key=lambda d: int(d["enrolled"]))
     return lst
 
 
 @app.route("/")
 def home():
-    return render_template('base.html', title="sample html")
+    return render_template("base.html", title="sample html")
 
 
 @app.route("/colleges")
@@ -206,8 +232,9 @@ def college_search():
     elif state_city == "":
         result = sql_search2(region.lower(), size, request.args.get("sort"))
     elif region != "" and state_city != "":
-        result = sql_search3(state_city.upper(),
-                             region.lower(), size, request.args.get("sort"))
+        result = sql_search3(
+            state_city.upper(), region.lower(), size, request.args.get("sort")
+        )
     return result
 
 
