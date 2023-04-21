@@ -151,7 +151,12 @@
   </div>
   </div>`
     }
-
+    function answerBoxTemplate2(messages) {
+      return `<div><div>
+                <h2>${messages}</h2> 
+  </div>
+  </div>`
+    }
 
     function sendFocus() {
       document.getElementById('filter-text-val').focus()
@@ -164,12 +169,18 @@
         location: document.getElementById("location-input").value, sort: document.getElementById("sort_input").value
       }).toString())
         .then((response) => response.json())
-        .then((data) => data.forEach(row => {
-          let tempDiv = document.createElement("div")
-          tempDiv.innerHTML = answerBoxTemplate(row.title, row.location, row.enrolled, row.website)
-          document.getElementById("answer-box").appendChild(tempDiv)
-        }));
-
+        .then((data) => {
+          data.forEach(row => {
+            let tempDiv = document.createElement("div")
+            // console.log(row.title)
+            if (row.title === undefined) {
+              //tempDiv.innerHTML = answerBoxTemplate(row.title, row.location, row.enrolled, row.website)
+              tempDiv.innerHTML = answerBoxTemplate2(row.messages)
+            }
+            else { tempDiv.innerHTML = answerBoxTemplate(row.title, row.location, row.enrolled, row.website) }
+            document.getElementById("answer-box").appendChild(tempDiv)
+          });
+        });
     }
 
   </script>

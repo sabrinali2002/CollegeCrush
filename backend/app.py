@@ -13,15 +13,15 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
-# MYSQL_USER = "root"
-# MYSQL_USER_PASSWORD = "Xuannhi230902!"
-# MYSQL_PORT = 3306
-# MYSQL_DATABASE = "colleges"
-
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = ""
+MYSQL_USER_PASSWORD = "Xuannhi230902!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "colleges"
+
+# MYSQL_USER = "root"
+# MYSQL_USER_PASSWORD = ""
+# MYSQL_PORT = 3306
+# MYSQL_DATABASE = "colleges"
 mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
 
@@ -49,7 +49,6 @@ def sql_search(state_city, size, sort):
         state = elem[2]
         website = elem[5]
         enroll = elem[6]
-        print(website)
         # if website != "https://" + str(website):
         #     website = "https://" + str(website)
         # else:
@@ -119,7 +118,6 @@ def sql_search2(region, size, sort):
         state = elem[2]
         website = elem[5]
         enroll = elem[6]
-        print(website)
         # if website != "https://" + str(website):
         #     website = "https://" + str(website)
         # else:
@@ -190,12 +188,10 @@ def sql_search3(state_city, region, size, sort):
         state = elem[2]
         website = elem[5]
         enroll = elem[6]
-        print(website)
         # if website != "https://" + str(website):
         #     website = "https://" + str(website)
         # else:
         #     website = elem[5]
-        print(website)
         lst.append(({'title': name, 'location': city + ", "+state,
                    'enrolled': enroll, 'website': website}))
     if sort == "Alphabetical":
@@ -334,6 +330,7 @@ def home():
 
 @app.route("/colleges")
 def college_search():
+    result = []
     state_city = request.args.get("title")
     size = request.args.get("size")
     region = request.args.get("location")
@@ -347,6 +344,9 @@ def college_search():
     for elem in result:
         if elem['website'][0:5] != 'https':
             elem['website'] = "https://" + str(elem['website'])
+    if result == []:
+        result = [{'messages': "College not found :("}]
+        return result
     return result
 
 
