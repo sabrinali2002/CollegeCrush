@@ -18,7 +18,9 @@
 --
 -- Table structure for table `colleges`
 --
+CREATE DATABASE IF NOT EXISTS kardashiandb;
 
+USE kardashiandb;
 DROP TABLE IF EXISTS `colleges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
