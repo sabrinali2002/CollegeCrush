@@ -166,11 +166,6 @@
         .then((response) => response.json())
         .then((data) => data.forEach(row => {
           let tempDiv = document.createElement("div")
-          // let website = row.website
-          // console.log(website)
-          // if (website.slice(0, 5) != "https") {
-          //   website = "https://".concat(str_website)
-          // }
           tempDiv.innerHTML = answerBoxTemplate(row.title, row.location, row.enrolled, row.website)
           document.getElementById("answer-box").appendChild(tempDiv)
         }));

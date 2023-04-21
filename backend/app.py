@@ -13,15 +13,15 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
-MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "Xuannhi230902!"
-MYSQL_PORT = 3306
-MYSQL_DATABASE = "colleges"
-
 # MYSQL_USER = "root"
-# MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+# MYSQL_USER_PASSWORD = "Xuannhi230902!"
 # MYSQL_PORT = 3306
 # MYSQL_DATABASE = "colleges"
+
+MYSQL_USER = "root"
+MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+MYSQL_PORT = 3306
+MYSQL_DATABASE = "kardashiandb"
 mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
 
@@ -347,9 +347,6 @@ def college_search():
     for elem in result:
         if elem['website'][0:5] != 'https':
             elem['website'] = "https://" + str(elem['website'])
-        # else:
-        #     website = elem[5]
-    # print(result)
     return result
 
 
