@@ -13,6 +13,10 @@
   <main>
     <h2>Find Your Perfect College Match</h2>
     <form>
+      <div class="input-box" onclick="sendFocus()">
+        <img src="{{ url_for('static', filename='images/mag.png') }}" />
+        <input placeholder="Enter your preferred college vibe!" id="filter-text-val" onkeyup="filterText()">
+      </div>
       <!-- <div class="q1">
         <label for="major">Select your preferred major:</label>
         <select id="major">
@@ -59,7 +63,7 @@
       </div> -->
 
       <div class="q2">
-        <label for="location">Select your preferred region:</label>
+        <label for="location">Select Your Preferred Region:</label>
         <select id="location-input">
           <option value="">Choose One</option>
           <option value="northeast">Northeast</option>
@@ -70,13 +74,13 @@
         </select> <br><br>
       </div>
       <div class="q3">
-        <label for="city">Input Your Preferred State or City:</label>
+        <label for="city">Select Your Preferred State or City:</label>
         <input placeholder="Search for your ideal college match!" id="filter-text-val"">
             <br><br>
         </div>
 
       <div class=" q3">
-        <label for="size">Select your preferred school size:</label>
+        <label for="size">Select Your Preferred School Size:</label>
         <select id="size">
           <option value="">Choose One</option>
           <option value="small">Small (under 5,000 students)</option>
@@ -84,6 +88,15 @@
           <option value="large">Large (over 15,000 students)</option>
         </select> <br><br>
       </div>
+      <!-- <div class="q01">
+        <label for="gpa">Select your preffered college setting:</label>
+        <select id="gpa" name="gpa">
+          <option value="">Choose One</option>
+          <option value="4.0">Urban</option>
+          <option value="3.7">Suburban</option>
+          <option value="3.5">Rural</option>
+        </select> <br><br>
+      </div> -->
       <div class=" q5">
         <label for="sort_input">Sort By:</label>
         <select id="sort_input">
