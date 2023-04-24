@@ -125,7 +125,7 @@ def find_cluster(df, new_df, clusters, user_input):
 
 
 #just some tests
-path = 'backend/X1_with_labels.csv'
+path = 'X1_with_labels.csv'
 personality_terms = ['creative', 'fun', 'happy', 'sad', 'funny', 'chill', 'desperate', 'responsible']
 user_input = ['creative']
 new_df = getDataframe(path)

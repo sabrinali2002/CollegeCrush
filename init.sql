@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for macos13.0 (arm64)
 --
--- Host: localhost    Database: CollegeCrush
+-- Host: localhost    Database: colleges
 -- ------------------------------------------------------
 -- Server version	8.0.31
 
@@ -18,6 +18,7 @@
 --
 -- Table structure for table `colleges`
 --
+
 DROP TABLE IF EXISTS `colleges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -52,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-16 18:49:30
+-- Dump completed on 2023-04-24 14:24:25
