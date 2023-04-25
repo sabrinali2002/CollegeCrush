@@ -31,16 +31,6 @@ mysql_engine.load_file_into_db()
 app = Flask(__name__)
 CORS(app)
 
-# def typo(state_city): 
-#     query_sql =  f"""SELECT city FROM colleges"""
-#     data = mysql_engine.query_selector(query_sql)
-#     diff_dict =  {}
-#     for elem in data: 
-#         diff = edit_distance_search(elem[0],state_city)
-#         diff_dict[elem[0]] = diff
-#     print(diff_dict)
-
-
 def sql_search(state_city, size, sort):
     lst = []
     if size == 'small':
@@ -356,7 +346,7 @@ def college_search():
         if elem['website'][0:5] != 'https':
             elem['website'] = "https://" + str(elem['website'])
     # search for typo???
-    else: 
+    else:
         if result == [] and state_city != "":
             word_distance = check_typo(state_city.upper(),size, request.args.get("sort"))
             error_message = "College not found :(. Do you mean '"+ word_distance[0][1] + "'?"
@@ -364,7 +354,7 @@ def college_search():
             # return result
         elif result == []:
             result =  [{'messages':  "College not found :("}]
-    #     return result
+        #     return result
     return result
 
 
