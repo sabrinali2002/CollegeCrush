@@ -3,7 +3,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
+import test
 
 """
 Returns a new dataframe that contains only personality related words
@@ -118,20 +118,15 @@ def find_cluster(df, new_df, clusters, user_input):
 
     return cluster_number, cluster_max_sim_score
 
-
-
-
-
-
+def get_result(input):
+    most_sim_cluster, sim_score = find_cluster(pd.read_csv(path), new_df, clusters, input)
+    return clusters[most_sim_cluster],sim_score
 
 #just some tests
+# path = 'X1_with_labels.csv'
+personality_terms = test.get_words()
+# user_input = ['sad']
 path = 'X1_with_labels.csv'
-personality_terms = ['creative', 'fun', 'happy', 'sad', 'funny', 'chill', 'desperate', 'responsible']
-user_input = ['creative']
 new_df = getDataframe(path)
 labels, clusters = cluster(personality_terms, path, new_df)
 s_score = s_score(new_df, labels)
-most_sim_cluster, sim_score = find_cluster(pd.read_csv(path), new_df, clusters, user_input)
-print(clusters[most_sim_cluster], sim_score)
-# print(clusters.keys())
-# print(clusters.values())
