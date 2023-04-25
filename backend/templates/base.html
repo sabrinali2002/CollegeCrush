@@ -13,10 +13,10 @@
   <main>
     <h2>Find Your Perfect College Match</h2>
     <form>
-      <!-- <div class="input-box" onclick="sendFocus()">
+      <div class="input-box" onclick="sendFocus()">
         <img src="{{ url_for('static', filename='images/mag.png') }}" />
         <input placeholder="Enter your preferred college vibe!" id="filter-text-val" onkeyup="filterText()">
-      </div> -->
+      </div>
       <!-- <div class="q1">
         <label for="major">Select your preferred major:</label>
         <select id="major">
@@ -75,7 +75,7 @@
       </div>
       <div class="q3">
         <label for="city">Select Your Preferred State or City:</label>
-        <input placeholder="Search for your ideal college match!" id="filter-text-val"">
+        <input placeholder="Search for your ideal college match!" id="state">
             <br><br>
         </div>
 
@@ -155,12 +155,14 @@
   </footer>
   <script>
 
-    function answerBoxTemplate(title, location, enrolled, website) {
+    function answerBoxTemplate(title, location, enrolled, website,score) {
       return `<div><div>
                 <h2 class='episode-title'>${title}</h2>
                 <h4> Location: ${location}</h4>
                 <h4> Students enrolled: ${enrolled}</h5>  
-                <a href="${website}">Learn More!</a>      
+                <a href="${website}">Learn More!</a>    
+                <h4> Match Score: ${score}</h4>
+                <br>
   </div>
   </div>`
     }
@@ -178,8 +180,9 @@
       document.getElementById("answer-box").innerHTML = ""
       console.log(document.getElementById("filter-text-val").value)
       fetch("/colleges?" + new URLSearchParams({
-        title: document.getElementById("filter-text-val").value, size: document.getElementById("size").value,
-        location: document.getElementById("location-input").value, sort: document.getElementById("sort_input").value
+        title: document.getElementById("state").value, size: document.getElementById("size").value,
+        location: document.getElementById("location-input").value, sort: document.getElementById("sort_input").value,
+        vibes: document.getElementById("filter-text-val").value
       }).toString())
         .then((response) => response.json())
         .then((data) => {
@@ -190,7 +193,7 @@
               //tempDiv.innerHTML = answerBoxTemplate(row.title, row.location, row.enrolled, row.website)
               tempDiv.innerHTML = answerBoxTemplate2(row.messages)
             }
-            else { tempDiv.innerHTML = answerBoxTemplate(row.title, row.location, row.enrolled, row.website) }
+            else { tempDiv.innerHTML = answerBoxTemplate(row.title, row.location, row.enrolled, row.website, 0) }
             document.getElementById("answer-box").appendChild(tempDiv)
           });
         });
