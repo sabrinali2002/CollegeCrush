@@ -295,13 +295,6 @@ def college_search():
     size = request.args.get("size")
     region = request.args.get("location")
     vibe = request.args.get("vibes")
-    print(vibe)
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
     vibe_list = vibe.split(',')
     print(vibe_list)
     college_list = ML.get_result(vibe_list)[0]
