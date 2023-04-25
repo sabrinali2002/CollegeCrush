@@ -297,7 +297,8 @@ def college_search():
     vibe = request.args.get("vibes")
     vibe_list = vibe.split(',')
     print(vibe_list)
-    college_list = ML.get_result(vibe_list)[0]
+    college_list = []
+    # college_list = ML.get_result(vibe_list)[0]
     for i in range(len(college_list)):
         college_list[i] = college_list[i].upper()
     if region == "":
