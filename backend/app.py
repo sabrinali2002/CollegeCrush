@@ -5,7 +5,7 @@ import sys
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
-import ML
+#import ML
 
 # ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
@@ -21,23 +21,20 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 
 MYSQL_USER = "root"
 # MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
-MYSQL_USER_PASSWORD = "Youyou0305!"
+MYSQL_USER_PASSWORD = "Xuannhi230902!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "colleges"
 mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
-
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
 mysql_engine.load_file_into_db()
-
 app = Flask(__name__)
 CORS(app)
-
 
 def sql_search(state_city, size, sort):
     lst = []
     if size == 'small':
-        query_sql = f"""SELECT * FROM colleges WHERE ((state = '{state_city}' OR city = '{state_city}') AND (tot_enroll < 5000))"""
+        query_sql = f"""SELECT * FROM colleges WHERE ((state = '{state_city}' OR city = '{state_city}') AND (tot_enroll < 5000)"""
     elif size == 'medium':
         query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll BETWEEN 5000 AND 15000))"""
     elif size == 'large':
@@ -51,16 +48,10 @@ def sql_search(state_city, size, sort):
         state = elem[2]
         website = elem[5]
         enroll = elem[6]
-        # if website != "https://" + str(website):
-        #     website = "https://" + str(website)
-        # else:
-        #     website = elem[5]
         lst.append(({'title': name, 'location': city + ", "+state,
                    'enrolled': enroll, 'website': website}))
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d['title'])
-    # elif sort_input == "Location":  #maybe we could incorporate text comparison element here
-    #     lst = sorted(arr, key=lambda d: d['location'])
     elif sort == "Enrollment Size":
         lst = sorted(lst, key=lambda d: int(d['enrolled']))
     return lst
@@ -112,7 +103,6 @@ def sql_search2(region, size, sort):
             query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD')"""
         elif region == "southeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL')"""
-
     data = mysql_engine.query_selector(query_sql)
     for elem in list(data):
         name = elem[0]
@@ -120,18 +110,10 @@ def sql_search2(region, size, sort):
         state = elem[2]
         website = elem[5]
         enroll = elem[6]
-        # if website != "https://" + str(website):
-        #     website = "https://" + str(website)
-        # else:
-        #     website = elem[5]
-        # print(website)
-
         lst.append(({'title': name, 'location': city + ", "+state,
                    'enrolled': enroll, 'website': website}))
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d['title'])
-    # elif sort_input == "Location":  #maybe we could incorporate text comparison element here
-    #     lst = sorted(arr, key=lambda d: d['location'])
     elif sort == "Enrollment Size":
         lst = sorted(lst, key=lambda d: int(d['enrolled']))
     return lst
@@ -190,37 +172,23 @@ def sql_search3(state_city, region, size, sort):
         state = elem[2]
         website = elem[5]
         enroll = elem[6]
-        # if website != "https://" + str(website):
-        #     website = "https://" + str(website)
-        # else:
-        #     website = elem[5]
         lst.append(({'title': name, 'location': city + ", "+state,
                    'enrolled': enroll, 'website': website}))
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d['title'])
-    # elif sort_input == "Location":  #maybe we could incorporate text comparison element here
-    #     lst = sorted(arr, key=lambda d: d['location'])
     elif sort == "Enrollment Size":
         lst = sorted(lst, key=lambda d: int(d['enrolled']))
     return lst
 ### MINIMUM EDIT DISTANCE ###
-
-
 def insertion_cost(message, j):
     return 1
-
-
 def deletion_cost(query, i):
     return 1
-
-
 def substitution_cost(query, message, i, j):
     if query[i-1] == message[j-1]:
         return 0
     else:
         return 1
-
-
 def edit_matrix(query, message, ins_cost_func, del_cost_func, sub_cost_func):
     """ Calculates the edit matrix
 
@@ -257,8 +225,6 @@ def edit_matrix(query, message, ins_cost_func, del_cost_func, sub_cost_func):
                 chart[i-1, j-1] + sub_cost_func(query, message, i, j)
             )
     return chart
-
-
 def edit_distance(query, message, ins_cost_func, del_cost_func, sub_cost_func):
     """ Finds the edit distance between a query and a message using the edit matrix
 
@@ -278,14 +244,11 @@ def edit_distance(query, message, ins_cost_func, del_cost_func, sub_cost_func):
     Returns:
         edit cost (int)
     """
-
     query = query.lower()
     message = message.lower()
     matrix = edit_matrix(query, message, ins_cost_func,
                          del_cost_func, sub_cost_func)
     return matrix[(len(query), len(message))]
-
-
 def edit_distance_search(query, msgs, ins_cost_func, del_cost_func, sub_cost_func):
     """ Edit distance search
 
@@ -314,17 +277,53 @@ def edit_distance_search(query, msgs, ins_cost_func, del_cost_func, sub_cost_fun
 
     """
     # YOUR CODE HERE
-    result = []
-    for msg in msgs:
-        message = (msg['text']).lower()
-        score = edit_distance(query, message, ins_cost_func,
-                              del_cost_func, sub_cost_func)
-        result.append((score, msg))
-    result = sorted(result, key=lambda x: x[0])
-    return result
+    # for msg in msgs:
+    msg = msgs.lower()
+    score = edit_distance(query, msg, ins_cost_func,del_cost_func, sub_cost_func)
+    return (score, msg)
+   
+def check_typo(state_city,size,sort):
+    # if size == 'small':
+    #     query_sql = f"""SELECT * FROM colleges WHERE ((state = '{state_city}' OR city = '{state_city}') AND (tot_enroll < 5000)"""
+    # elif size == 'medium':
+    #     query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll BETWEEN 5000 AND 15000))"""
+    # elif size == 'large':
+    #     query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' AND (tot_enroll > 15000))"""
+    # else:
+    #     # what if there is 
+    query_sql = f"""SELECT city FROM colleges"""
+    data = list(mysql_engine.query_selector(query_sql))
+    word_distance = []
+    for elem in (list(data)[2:]): 
+        city = elem[0]
+        if city == None or city == 'city': 
+            continue
+        # city = (elem[0].split(";"))[1]
+        # print(city)
+        diff = edit_distance_search(state_city,city,insertion_cost,deletion_cost,substitution_cost)
+        word_distance.append(diff)
+    word_distance = sorted(word_distance,key = lambda x: x[0])
+    return word_distance
+    
+        #diff_dict[elem[0]] = diff
+    #print(diff_dict)
+    # for elem in list(data):
+    #     name = elem[0]
+    #     city = elem[1]
+    #     state = elem[2]
+    #     website = elem[5]
+    #     enroll = elem[6]
+    #     lst.append(({'title': name, 'location': city + ", "+state,
+    #                'enrolled': enroll, 'website': website}))
+    # if sort == "Alphabetical":
+    #     lst = sorted(lst, key=lambda d: d['title'])
+    # elif sort == "Enrollment Size":
+    #     lst = sorted(lst, key=lambda d: int(d['enrolled']))
+    # return lst
+
+
+
 #############################
-
-
 @app.route("/")
 def home():
     return render_template('base.html', title="sample html")
@@ -346,9 +345,16 @@ def college_search():
     for elem in result:
         if elem['website'][0:5] != 'https':
             elem['website'] = "https://" + str(elem['website'])
-    if result == []:
-        result = [{'messages': "College not found :("}]
-        return result
+    # search for typo???
+    else:
+        if result == [] and state_city != "":
+            word_distance = check_typo(state_city.upper(),size, request.args.get("sort"))
+            error_message = "College not found :(. Do you mean '"+ word_distance[0][1] + "'?"
+            result = [{'messages': error_message}]
+            # return result
+        elif result == []:
+            result =  [{'messages':  "College not found :("}]
+        #     return result
     return result
 
 
