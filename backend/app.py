@@ -42,7 +42,7 @@ CORS(app)
 #     print(diff_dict)
 
 def sql_search(state_city, size, sort,college):
-    college_l = tuple(college)
+    college_l = tuple(college[0])
     print(college_l)
     lst = []
     if len(college_l) > 2:
@@ -64,7 +64,7 @@ def sql_search(state_city, size, sort,college):
         if int(enroll)>10:
             if size not in s or ((size == "small" and enroll_int<5000) or (size == "medium" and enroll_int > 5000 and enroll_int < 15000) or (size == "large" and enroll_int > 15000)):
                 lst.append(({'title': name, 'location': city + ", "+state,
-                        'enrolled': enroll, 'website': website}))
+                        'enrolled': enroll, 'website': website, 'score': college[1]}))
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d['title'])
     elif sort == "Enrollment Size":
@@ -98,7 +98,7 @@ def sql_search2(region, size, sort,college):
         enroll_int = int(enroll)
         if enroll_int > 10 and size not in s or (int(enroll)>10 and (size == "small" and enroll_int<5000) or (size == "medium" and enroll_int > 5000 and enroll_int < 15000) or (size == "large" and enroll_int > 15000)):
             lst.append(({'title': name, 'location': city + ", "+state,
-                    'enrolled': enroll, 'website': website}))
+                    'enrolled': enroll, 'website': website, 'score': college[1]}))
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d['title'])
     elif sort == "Enrollment Size":
@@ -132,7 +132,7 @@ def sql_search3(state_city, region, size, sort,college):
         enroll_int = int(enroll)
         if size not in s or (int(enroll)>10 and (size == "small" and enroll_int<5000) or (size == "medium" and enroll_int > 5000 and enroll_int < 15000) or (size == "large" and enroll_int > 15000)):
             lst.append(({'title': name, 'location': city + ", "+state,
-                    'enrolled': enroll, 'website': website}))
+                    'enrolled': enroll, 'website': website, 'score': college[1]}))
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d['title'])
     elif sort == "Enrollment Size":
@@ -297,21 +297,21 @@ def college_search():
     region = request.args.get("location")
     vibe = request.args.get("vibes")
     vibe_list = vibe.split(',')
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(vibe_list)
-    college_list = ML.get_result(vibe_list)[0]
-    print(college_list)
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
-    print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
+    # print(vibe_list)
+    college_list = ML.get_result(vibe_list)
+    # print(college_list)
+    # print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
+    # print(";-----------------------------------------------------")
     for i in range(len(college_list)):
         college_list[i] = college_list[i].upper()
     if region == "":
