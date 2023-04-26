@@ -5,8 +5,8 @@ import sys
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
-import ML
-import test
+#import ML
+#import test
 
 # ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
@@ -21,8 +21,8 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # MYSQL_DATABASE = "colleges"
 
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
-#MYSQL_USER_PASSWORD = "Coryer242!!"
+#MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+MYSQL_USER_PASSWORD = "Coryer242!!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "colleges"
 mysql_engine = MySQLDatabaseHandler(
@@ -308,13 +308,12 @@ def college_search():
     region = request.args.get("location")
     vibe = request.args.get("vibes")
     vibe_list = vibe.split(',')
-    print("hihihihhih")
-    print(vibe_list)
-    try:
-        college_list = ML.get_result(vibe_list)
-        print(college_list)
-    except:
-        college_list = [[],0]
+#   try:
+#       college_list = ML.get_result(vibe_list)
+#       print(college_list)
+#    except:
+#        college_list = [[],0]
+    college_list = [[],0]
     for i in range(len(college_list[0])):
         college_list[0][i] = college_list[0][i].upper()
     if len(college_list[0])<=1:
@@ -341,4 +340,4 @@ def college_search():
     return result
 
 
-#app.run(debug=True)
+app.run(debug=True)
