@@ -43,12 +43,8 @@ CORS(app)
 
 def sql_search(state_city, size, sort,college):
     college_l = tuple(college[0])
-    print(college_l)
     lst = []
-    if len(college_l) > 2:
-        query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' OR name IN {college_l})"""
-    else:
-        query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}')"""
+    query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' OR name IN {college_l})"""
     data = mysql_engine.query_selector(query_sql)
     s = set()
     s.add("small")
@@ -56,6 +52,7 @@ def sql_search(state_city, size, sort,college):
     s.add("large")
     for elem in list(data):
         name = elem[0]
+        print(name)
         city = elem[1]
         state = elem[2]
         website = elem[5]
@@ -63,8 +60,12 @@ def sql_search(state_city, size, sort,college):
         enroll_int = int(enroll)
         if int(enroll)>10:
             if size not in s or ((size == "small" and enroll_int<5000) or (size == "medium" and enroll_int > 5000 and enroll_int < 15000) or (size == "large" and enroll_int > 15000)):
-                lst.append(({'title': name, 'location': city + ", "+state,
-                        'enrolled': enroll, 'website': website, 'score': college[1]}))
+                if name in college[0]:
+                    lst.append(({'title': name, 'location': city + ", "+state,
+                        'enrolled': enroll, 'website': website, 'score': college[1]+0.5}))
+                else:
+                    lst.append(({'title': name, 'location': city + ", "+state,
+                        'enrolled': enroll, 'website': website, 'score': 0.5}))
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d['title'])
     elif sort == "Enrollment Size":
@@ -74,16 +75,17 @@ def sql_search(state_city, size, sort,college):
 
 def sql_search2(region, size, sort,college):
     lst = []
+    college_l = tuple(college[0])
     if region == 'midwest':
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI')"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') OR name IN {college_l}"""
     elif region == 'southwest':
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ')"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') OR name IN {college_l}"""
     elif region == 'west':
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT', 'WA','NV', 'CA','ID','OR','UT')"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT', 'WA','NV', 'CA','ID','OR','UT') OR name IN {college_l}"""
     elif region == 'northeast':
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD')"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') OR name IN {college_l}"""
     elif region == 'southeast':
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL')"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') OR name IN {college_l}"""
     data = mysql_engine.query_selector(query_sql)
     s = set()
     s.add("small")
@@ -97,8 +99,12 @@ def sql_search2(region, size, sort,college):
         enroll = elem[6]
         enroll_int = int(enroll)
         if enroll_int > 10 and size not in s or (int(enroll)>10 and (size == "small" and enroll_int<5000) or (size == "medium" and enroll_int > 5000 and enroll_int < 15000) or (size == "large" and enroll_int > 15000)):
-            lst.append(({'title': name, 'location': city + ", "+state,
-                    'enrolled': enroll, 'website': website, 'score': college[1]}))
+            if name in college[0]:
+                lst.append(({'title': name, 'location': city + ", "+state,
+                        'enrolled': enroll, 'website': website, 'score': college[1]+0.5}))
+            else:
+                lst.append(({'title': name, 'location': city + ", "+state,
+                        'enrolled': enroll, 'website': website, 'score': 0.5}))
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d['title'])
     elif sort == "Enrollment Size":
@@ -107,17 +113,18 @@ def sql_search2(region, size, sort,college):
 
 
 def sql_search3(state_city, region, size, sort,college):
+    college_l = tuple(college[0])
     lst = []
     if region == 'midwest':
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (state = '{state_city}' OR city = '{state_city}')"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
     elif region == 'southwest':
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') AND (state = '{state_city}' OR city = '{state_city}')"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
     elif region == 'west':
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT','WA','NV','CA','ID','OR','UT') AND (state = '{state_city}' OR city = '{state_city}')"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT','WA','NV','CA','ID','OR','UT') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
     elif region == 'northeast':
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND (state = '{state_city}' OR city = '{state_city}')"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
     elif region == 'southeast':
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (state = '{state_city}' OR city = '{state_city}')"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
     data = mysql_engine.query_selector(query_sql)
     s = set()
     s.add("small")
@@ -131,8 +138,12 @@ def sql_search3(state_city, region, size, sort,college):
         enroll = elem[6]
         enroll_int = int(enroll)
         if size not in s or (int(enroll)>10 and (size == "small" and enroll_int<5000) or (size == "medium" and enroll_int > 5000 and enroll_int < 15000) or (size == "large" and enroll_int > 15000)):
-            lst.append(({'title': name, 'location': city + ", "+state,
-                    'enrolled': enroll, 'website': website, 'score': college[1]}))
+            if name in college[0]:
+                lst.append(({'title': name, 'location': city + ", "+state,
+                        'enrolled': enroll, 'website': website, 'score': college[1]+0.5}))
+            else:
+                lst.append(({'title': name, 'location': city + ", "+state,
+                        'enrolled': enroll, 'website': website, 'score': 0.5}))
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d['title'])
     elif sort == "Enrollment Size":
@@ -297,24 +308,20 @@ def college_search():
     region = request.args.get("location")
     vibe = request.args.get("vibes")
     vibe_list = vibe.split(',')
-    # print(";-----------------------------------------------------")
-    # print(";-----------------------------------------------------")
-    # print(";-----------------------------------------------------")
-    # print(";-----------------------------------------------------")
-    # print(";-----------------------------------------------------")
-    # print(";-----------------------------------------------------")
-    # print(vibe_list)
-    college_list = ML.get_result(vibe_list)
-    # print(college_list)
-    # print(";-----------------------------------------------------")
-    # print(";-----------------------------------------------------")
-    # print(";-----------------------------------------------------")
-    # print(";-----------------------------------------------------")
-    # print(";-----------------------------------------------------")
-    # print(";-----------------------------------------------------")
-    for i in range(len(college_list)):
-        college_list[i] = college_list[i].upper()
+    print("hihihihhih")
+    print(vibe_list)
+    try:
+        college_list = ML.get_result(vibe_list)
+        print(college_list)
+    except:
+        college_list = [[],0]
+    for i in range(len(college_list[0])):
+        college_list[0][i] = college_list[0][i].upper()
+    if len(college_list[0])<=1:
+        college_list[0].append("")
+        college_list[0].append("")
     if region == "":
+        print("hello")
         result = sql_search(state_city.upper(), size, request.args.get("sort"),college_list)
     elif state_city == "":
         result = sql_search2(region.lower(), size, request.args.get("sort"),college_list)
@@ -324,15 +331,13 @@ def college_search():
     for elem in result:
         if elem['website'][0:5] != 'https':
             elem['website'] = "https://" + str(elem['website'])
-    # search for typo???
-    else: 
-        if result == [] and state_city != "":
-            word_distance = check_typo(state_city.upper(),size, request.args.get("sort"))
-            error_message = "College not found :(. Do you mean '"+ word_distance[0][1] + "'?"
-            result = [{'messages': error_message}]
+    if result == [] and state_city != "":
+        word_distance = check_typo(state_city.upper(),size, request.args.get("sort"))
+        error_message = "College not found :(. Do you mean '"+ word_distance[0][1] + "'?"
+        result = [{'messages': error_message}]
             # return result
-        elif result == []:
-            result =  [{'messages':  "College not found :("}]
+    elif result == []:
+        result =  [{'messages':  "College not found :("}]
     return result
 
 
