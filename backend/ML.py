@@ -130,4 +130,3 @@ path = 'X1_with_labels.csv'
 new_df = getDataframe(path)
 labels, clusters = cluster(personality_terms, path, new_df)
 s_score = s_score(new_df, labels)
-print(get_result('sad'))
