@@ -108,7 +108,7 @@ def find_cluster(df, new_df, clusters, user_input):
     for cluster_i, colleges in clusters.items():
         score = 0
         for college in colleges:
-            print(df.loc[college_names == college]['index'].values[0])
+            #print(df.loc[college_names == college]['index'].values[0])
             college_index = df.loc[college_names == college]['index'].values[0]
             score += similarity_scores[0][college_index]
         size = len(colleges)

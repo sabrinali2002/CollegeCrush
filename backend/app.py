@@ -42,6 +42,11 @@ CORS(app)
 #     print(diff_dict)
 
 def sql_search(state_city, size, sort,college):
+    empty = False
+    if len(college[0])<=1:
+        empty = True
+        college[0].append("")
+        college[0].append("")
     college_l = tuple(college[0])
     lst = []
     print(college_l)
@@ -63,14 +68,20 @@ def sql_search(state_city, size, sort,college):
             if size not in s or ((size == "small" and enroll_int<5000) or (size == "medium" and enroll_int > 5000 and enroll_int < 15000) or (size == "large" and enroll_int > 15000)):
                 if name in college[0]:
                     lst.append(({'title': name, 'location': city + ", "+state,
-                        'enrolled': enroll, 'website': website, 'score': college[1]+0.5}))
+                        'enrolled': enroll, 'website': website, 'score': college[1]+0.75}))
                 else:
-                    lst.append(({'title': name, 'location': city + ", "+state,
-                        'enrolled': enroll, 'website': website, 'score': 0.5}))
+                    if empty:
+                        lst.append(({'title': name, 'location': city + ", "+state,
+                        'enrolled': enroll, 'website': website, 'score': 1.0}))
+                    else:
+                        lst.append(({'title': name, 'location': city + ", "+state,
+                        'enrolled': enroll, 'website': website, 'score': 0.75}))
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d['title'])
     elif sort == "Enrollment Size":
         lst = sorted(lst, key=lambda d: int(d['enrolled']))
+    else:
+        lst = sorted(lst, key=lambda d: int(d['score']))
     return lst
 
 
@@ -309,15 +320,15 @@ def college_search():
     region = request.args.get("location")
     vibe = request.args.get("vibes")
     vibe_list = vibe.split(',')
-    college_list = ML.get_result(vibe_list)
-    print(college_list)
+    if vibe != "":
+        college_list = ML.get_result(vibe_list)
+        print(college_list)
+    else:
+        college_list = [[],0]
 #    except:
 #        college_list = [[],0]
     for i in range(len(college_list[0])):
         college_list[0][i] = college_list[0][i].upper()
-    if len(college_list[0])<=1:
-        college_list[0].append("")
-        college_list[0].append("")
     if region == "":
         result = sql_search(state_city.upper(), size, request.args.get("sort"),college_list)
     elif state_city == "":
