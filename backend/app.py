@@ -44,6 +44,7 @@ def sql_search(state_city, size, sort,college):
     query_sql = f"""SELECT * FROM colleges WHERE ((state = '{state_city}' OR city = '{state_city}') AND name IN {college_l})"""
     data = mysql_engine.query_selector(query_sql)
     if data.rowcount == 0:
+        print("hi")
         query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' OR name IN {college_l})"""
         data = mysql_engine.query_selector(query_sql)
     s = set()
@@ -63,9 +64,12 @@ def sql_search(state_city, size, sort,college):
                 or (size == "medium" and enroll_int > 5000 and enroll_int < 15000)
                 or (size == "large" and enroll_int > 15000)
             ):
-                if name in college[0]:
+                if name in college[0] and city == state_city:
                     lst.append(({'title': name, 'location': city + ", "+state,
                         'enrolled': enroll, 'website': website, 'score': college[1]+0.75}))
+                elif name in college[0] and city != state_city:
+                    lst.append(({'title': name, 'location': city + ", "+state,
+                        'enrolled': enroll, 'website': website, 'score': college[1]}))
                 else:
                     if empty:
                         lst.append(({'title': name, 'location': city + ", "+state,
