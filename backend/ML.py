@@ -108,6 +108,7 @@ def find_cluster(df, new_df, clusters, user_input):
     for cluster_i, colleges in clusters.items():
         score = 0
         for college in colleges:
+            print(df.loc[college_names == college]['index'].values[0])
             college_index = df.loc[college_names == college]['index'].values[0]
             score += similarity_scores[0][college_index]
         size = len(colleges)
@@ -123,7 +124,6 @@ def get_result(input):
     return clusters[most_sim_cluster],sim_score
 
 #just some tests
-# path = 'X1_with_labels.csv'
 personality_terms = test.get_words()
 # user_input = ['sad']
 path = 'X1_with_labels.csv'

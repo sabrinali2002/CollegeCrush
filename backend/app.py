@@ -5,8 +5,8 @@ import sys
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
-#import ML
-#import test
+import ML
+import test
 
 # ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
@@ -22,7 +22,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 
 MYSQL_USER = "root"
 #MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
-MYSQL_USER_PASSWORD = "Xuannhi230902!"
+MYSQL_USER_PASSWORD = "Coryer242!!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "colleges"
 mysql_engine = MySQLDatabaseHandler(
@@ -44,6 +44,7 @@ CORS(app)
 def sql_search(state_city, size, sort,college):
     college_l = tuple(college[0])
     lst = []
+    print(college_l)
     query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' OR name IN {college_l})"""
     data = mysql_engine.query_selector(query_sql)
     s = set()
@@ -51,8 +52,8 @@ def sql_search(state_city, size, sort,college):
     s.add("medium")
     s.add("large")
     for elem in list(data):
+        print(elem)
         name = elem[0]
-        print(name)
         city = elem[1]
         state = elem[2]
         website = elem[5]
@@ -308,19 +309,16 @@ def college_search():
     region = request.args.get("location")
     vibe = request.args.get("vibes")
     vibe_list = vibe.split(',')
-#   try:
-#       college_list = ML.get_result(vibe_list)
-#       print(college_list)
+    college_list = ML.get_result(vibe_list)
+    print(college_list)
 #    except:
 #        college_list = [[],0]
-    college_list = [[],0]
     for i in range(len(college_list[0])):
         college_list[0][i] = college_list[0][i].upper()
     if len(college_list[0])<=1:
         college_list[0].append("")
         college_list[0].append("")
     if region == "":
-        print("hello")
         result = sql_search(state_city.upper(), size, request.args.get("sort"),college_list)
     elif state_city == "":
         result = sql_search2(region.lower(), size, request.args.get("sort"),college_list)
@@ -338,6 +336,4 @@ def college_search():
     elif result == []:
         result =  [{'messages':  "College not found :("}]
     return result
-
-
-#app.run(debug=True)
+app.run(debug=True)
