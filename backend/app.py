@@ -57,8 +57,8 @@ def sql_search(state_city, size, sort,college):
     s.add("small")
     s.add("medium")
     s.add("large")
+    print(len(data))
     for elem in list(data):
-        print(elem)
         name = elem[0]
         city = elem[1]
         state = elem[2]
