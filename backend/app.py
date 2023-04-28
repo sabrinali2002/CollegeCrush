@@ -16,7 +16,6 @@ os.environ["ROOT_PATH"] = os.path.abspath(os.path.join("..", os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 # MYSQL_USER = "root"
-# MYSQL_USER_PASSWORD = "Xuannhi230902!"
 # MYSQL_PORT = 3306
 # MYSQL_DATABASE = "colleges"
 
@@ -33,15 +32,6 @@ mysql_engine.load_file_into_db()
 app = Flask(__name__)
 CORS(app)
 
-# def typo(state_city):
-#     query_sql =  f"""SELECT city FROM colleges"""
-#     data = mysql_engine.query_selector(query_sql)
-#     diff_dict =  {}
-#     for elem in data:
-#         diff = edit_distance_search(elem[0],state_city)
-#         diff_dict[elem[0]] = diff
-#     print(diff_dict)
-
 def sql_search(state_city, size, sort,college):
     empty = False
     if len(college[0])<=1:
@@ -51,13 +41,16 @@ def sql_search(state_city, size, sort,college):
     college_l = tuple(college[0])
     lst = []
     # print(college_l)
-    query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' OR name IN {college_l})"""
+    query_sql = f"""SELECT * FROM colleges WHERE ((state = '{state_city}' OR city = '{state_city}') AND name IN {college_l})"""
     data = mysql_engine.query_selector(query_sql)
+    if data.rowcount == 0:
+        print("hi")
+        query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' OR name IN {college_l})"""
+        data = mysql_engine.query_selector(query_sql)
     s = set()
     s.add("small")
     s.add("medium")
     s.add("large")
-    print(len(data))
     for elem in list(data):
         name = elem[0]
         city = elem[1]
@@ -71,9 +64,12 @@ def sql_search(state_city, size, sort,college):
                 or (size == "medium" and enroll_int > 5000 and enroll_int < 15000)
                 or (size == "large" and enroll_int > 15000)
             ):
-                if name in college[0]:
+                if name in college[0] and city == state_city:
                     lst.append(({'title': name, 'location': city + ", "+state,
                         'enrolled': enroll, 'website': website, 'score': college[1]+0.75}))
+                elif name in college[0] and city != state_city:
+                    lst.append(({'title': name, 'location': city + ", "+state,
+                        'enrolled': enroll, 'website': website, 'score': college[1]}))
                 else:
                     if empty:
                         lst.append(({'title': name, 'location': city + ", "+state,
@@ -98,16 +94,28 @@ def sql_search2(region, size, sort, college):
     lst = []
     college_l = tuple(college[0])
     if region == "midwest":
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') OR name IN {college_l}"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND name IN {college_l}"""
     elif region == "southwest":
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') OR name IN {college_l}"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') AND name IN {college_l}"""
     elif region == "west":
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT', 'WA','NV', 'CA','ID','OR','UT') OR name IN {college_l}"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT', 'WA','NV', 'CA','ID','OR','UT') AND name IN {college_l}"""
     elif region == "northeast":
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') OR name IN {college_l}"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND name IN {college_l}"""
     elif region == "southeast":
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') OR name IN {college_l}"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND name IN {college_l}"""
     data = mysql_engine.query_selector(query_sql)
+    if data.rowcount==0:
+        if region == "midwest":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') OR name IN {college_l}"""
+        elif region == "southwest":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') OR name IN {college_l}"""
+        elif region == "west":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT', 'WA','NV', 'CA','ID','OR','UT') OR name IN {college_l}"""
+        elif region == "northeast":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') OR name IN {college_l}"""
+        elif region == "southeast":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') OR name IN {college_l}"""
+        data = mysql_engine.query_selector(query_sql)
     s = set()
     s.add("small")
     s.add("medium")
@@ -157,16 +165,28 @@ def sql_search3(state_city, region, size, sort, college):
     college_l = tuple(college[0])
     lst = []
     if region == "midwest":
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (state = '{state_city}' OR city = '{state_city}') AND name IN {college_l}"""
     elif region == "southwest":
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') AND (state = '{state_city}' OR city = '{state_city}') AND name IN {college_l}"""
     elif region == "west":
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT','WA','NV','CA','ID','OR','UT') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT','WA','NV','CA','ID','OR','UT') AND (state = '{state_city}' OR city = '{state_city}') AND name IN {college_l}"""
     elif region == "northeast":
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND (state = '{state_city}' OR city = '{state_city}') AND name IN {college_l}"""
     elif region == "southeast":
-        query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
+        query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (state = '{state_city}' OR city = '{state_city}') AND name IN {college_l}"""
     data = mysql_engine.query_selector(query_sql)
+    if data.rowcount == 0:
+        if region == "midwest":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
+        elif region == "southwest":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('TX','OK','NM','AZ') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
+        elif region == "west":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('AK','HI','CO','WY','MT','WA','NV','CA','ID','OR','UT') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
+        elif region == "northeast":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
+        elif region == "southeast":
+            query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
+    data = mysql_engine.query_selector(query_sql) 
     s = set()
     s.add("small")
     s.add("medium")
@@ -378,11 +398,6 @@ def college_search():
     labels, clusters = ML.cluster(ML.personality_terms, ML.path, ML.new_df)
     most_sim_cluster, sim_score = ML.find_cluster(ML.df, ML.new_df, clusters, vibe_list)
     college_list = clusters[most_sim_cluster], sim_score
-    # college_list = ML.get_result(vibe_list)
-
-    # print(college_list)
-    #    except:
-    #        college_list = [[],0]
     for i in range(len(college_list[0])):
         college_list[0][i] = college_list[0][i].upper()
     if len(college_list[0]) <= 1:
@@ -413,7 +428,6 @@ def college_search():
             "College not found :(. Do you mean '" + word_distance[0][1] + "'?"
         )
         result = [{"messages": error_message}]
-        # return result
     elif result == []:
         result = [{"messages": "College not found :("}]
     return result
