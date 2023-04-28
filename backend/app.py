@@ -7,6 +7,7 @@ from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
 import ML
 import test
+import synonym_search
 
 # ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
@@ -21,7 +22,7 @@ os.environ["ROOT_PATH"] = os.path.abspath(os.path.join("..", os.curdir))
 
 MYSQL_USER = "root"
 # MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
-MYSQL_USER_PASSWORD = "Coryer242!!"
+MYSQL_USER_PASSWORD = "Youyou0305!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "colleges"
 mysql_engine = MySQLDatabaseHandler(
@@ -32,9 +33,10 @@ mysql_engine.load_file_into_db()
 app = Flask(__name__)
 CORS(app)
 
-def sql_search(state_city, size, sort,college):
+
+def sql_search(state_city, size, sort, college):
     empty = False
-    if len(college[0])<=1:
+    if len(college[0]) <= 1:
         empty = True
         college[0].append("")
         college[0].append("")
@@ -65,29 +67,66 @@ def sql_search(state_city, size, sort,college):
                 or (size == "large" and enroll_int > 15000)
             ):
                 if name in college[0] and city == state_city:
-                    lst.append(({'title': name, 'location': city + ", "+state,
-                        'enrolled': enroll, 'website': website, 'score': college[1]+0.75}))
+                    lst.append(
+                        (
+                            {
+                                "title": name,
+                                "location": city + ", " + state,
+                                "enrolled": enroll,
+                                "website": website,
+                                "score": college[1] + 0.75,
+                            }
+                        )
+                    )
                 elif name in college[0] and city != state_city:
-                    lst.append(({'title': name, 'location': city + ", "+state,
-                        'enrolled': enroll, 'website': website, 'score': college[1]}))
+                    lst.append(
+                        (
+                            {
+                                "title": name,
+                                "location": city + ", " + state,
+                                "enrolled": enroll,
+                                "website": website,
+                                "score": college[1],
+                            }
+                        )
+                    )
                 else:
                     if empty:
-                        lst.append(({'title': name, 'location': city + ", "+state,
-                        'enrolled': enroll, 'website': website, 'score': 1.0}))
+                        lst.append(
+                            (
+                                {
+                                    "title": name,
+                                    "location": city + ", " + state,
+                                    "enrolled": enroll,
+                                    "website": website,
+                                    "score": 1.0,
+                                }
+                            )
+                        )
                     else:
-                        lst.append(({'title': name, 'location': city + ", "+state,
-                        'enrolled': enroll, 'website': website, 'score': 0.75}))
+                        lst.append(
+                            (
+                                {
+                                    "title": name,
+                                    "location": city + ", " + state,
+                                    "enrolled": enroll,
+                                    "website": website,
+                                    "score": 0.75,
+                                }
+                            )
+                        )
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d["title"])
     elif sort == "Enrollment Size":
-        lst = sorted(lst, key=lambda d: int(d['enrolled']))
+        lst = sorted(lst, key=lambda d: int(d["enrolled"]))
     else:
-        lst = sorted(lst, key=lambda d: int(d['score']))[::-1]
+        lst = sorted(lst, key=lambda d: int(d["score"]))[::-1]
     return lst
+
 
 def sql_search2(region, size, sort, college):
     empty = False
-    if len(college[0])<=1:
+    if len(college[0]) <= 1:
         empty = True
         college[0].append("")
         college[0].append("")
@@ -104,7 +143,7 @@ def sql_search2(region, size, sort, college):
     elif region == "southeast":
         query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND name IN {college_l}"""
     data = mysql_engine.query_selector(query_sql)
-    if data.rowcount==0:
+    if data.rowcount == 0:
         if region == "midwest":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('IL','IN','MI','OH','ND','SD','NE','KS','MN','IA','MO','WI') OR name IN {college_l}"""
         elif region == "southwest":
@@ -138,27 +177,54 @@ def sql_search2(region, size, sort, college):
             )
         ):
             if name in college[0]:
-                lst.append(({'title': name, 'location': city + ", "+state,
-                        'enrolled': enroll, 'website': website, 'score': college[1]+0.75}))
+                lst.append(
+                    (
+                        {
+                            "title": name,
+                            "location": city + ", " + state,
+                            "enrolled": enroll,
+                            "website": website,
+                            "score": college[1] + 0.75,
+                        }
+                    )
+                )
             else:
                 if empty:
-                    lst.append(({'title': name, 'location': city + ", "+state,
-                    'enrolled': enroll, 'website': website, 'score': 1.0}))
+                    lst.append(
+                        (
+                            {
+                                "title": name,
+                                "location": city + ", " + state,
+                                "enrolled": enroll,
+                                "website": website,
+                                "score": 1.0,
+                            }
+                        )
+                    )
                 else:
-                    lst.append(({'title': name, 'location': city + ", "+state,
-                    'enrolled': enroll, 'website': website, 'score': 0.75}))
+                    lst.append(
+                        (
+                            {
+                                "title": name,
+                                "location": city + ", " + state,
+                                "enrolled": enroll,
+                                "website": website,
+                                "score": 0.75,
+                            }
+                        )
+                    )
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d["title"])
     elif sort == "Enrollment Size":
         lst = sorted(lst, key=lambda d: int(d["enrolled"]))
     else:
-        lst = sorted(lst, key=lambda d: int(d['score']))[::-1]
+        lst = sorted(lst, key=lambda d: int(d["score"]))[::-1]
     return lst
 
 
 def sql_search3(state_city, region, size, sort, college):
     empty = False
-    if len(college[0])<=1:
+    if len(college[0]) <= 1:
         empty = True
         college[0].append("")
         college[0].append("")
@@ -186,7 +252,7 @@ def sql_search3(state_city, region, size, sort, college):
             query_sql = f"""SELECT * FROM colleges WHERE state IN('DE','PA','NY','NJ','VT','NH','ME','MA','CT','RI','MD') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
         elif region == "southeast":
             query_sql = f"""SELECT * FROM colleges WHERE state IN('WV','VA','KY','TN','NC','SC','GA','AL','MS','AR','LA','FL') AND (state = '{state_city}' OR city = '{state_city}') OR name IN {college_l}"""
-    data = mysql_engine.query_selector(query_sql) 
+    data = mysql_engine.query_selector(query_sql)
     s = set()
     s.add("small")
     s.add("medium")
@@ -205,21 +271,48 @@ def sql_search3(state_city, region, size, sort, college):
             or (size == "large" and enroll_int > 15000)
         ):
             if name in college[0]:
-                lst.append(({'title': name, 'location': city + ", "+state,
-                        'enrolled': enroll, 'website': website, 'score': college[1]+0.75}))
+                lst.append(
+                    (
+                        {
+                            "title": name,
+                            "location": city + ", " + state,
+                            "enrolled": enroll,
+                            "website": website,
+                            "score": college[1] + 0.75,
+                        }
+                    )
+                )
             else:
                 if empty:
-                    lst.append(({'title': name, 'location': city + ", "+state,
-                    'enrolled': enroll, 'website': website, 'score': 1.0}))
+                    lst.append(
+                        (
+                            {
+                                "title": name,
+                                "location": city + ", " + state,
+                                "enrolled": enroll,
+                                "website": website,
+                                "score": 1.0,
+                            }
+                        )
+                    )
                 else:
-                    lst.append(({'title': name, 'location': city + ", "+state,
-                    'enrolled': enroll, 'website': website, 'score': 0.75}))
+                    lst.append(
+                        (
+                            {
+                                "title": name,
+                                "location": city + ", " + state,
+                                "enrolled": enroll,
+                                "website": website,
+                                "score": 0.75,
+                            }
+                        )
+                    )
     if sort == "Alphabetical":
         lst = sorted(lst, key=lambda d: d["title"])
     elif sort == "Enrollment Size":
         lst = sorted(lst, key=lambda d: int(d["enrolled"]))
     else:
-        lst = sorted(lst, key=lambda d: int(d['score']))[::-1]
+        lst = sorted(lst, key=lambda d: int(d["score"]))[::-1]
     return lst
 
 
@@ -393,6 +486,11 @@ def college_search():
     region = request.args.get("location")
     vibe = request.args.get("vibes")
     vibe_list = vibe.split(",")
+
+    syn_list = synonym_search.syn_list(vibe_list)
+    intersect = synonym_search.intersect(syn_list=syn_list)
+    for i in intersect:
+        vibe_list.append(i)
 
     # ML related
     labels, clusters = ML.cluster(ML.personality_terms, ML.path, ML.new_df)
