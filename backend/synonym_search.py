@@ -7,11 +7,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd 
 
 
-synoms_json = open('backend/synonyms.json')
+synoms_json = open('synonyms.json')
 #Source: https://www.kaggle.com/datasets/duketemon/wordnet-synonyms?resource=download
 
 synom_data = json.load(synoms_json)
-X1df = pd.read_csv('backend/X1_with_labels.csv')
+X1df = pd.read_csv('X1_with_labels.csv')
 
 #type(synom_data['cowboy:noun'])
 parts_of_speech = ['adjective', 'adverb', 'noun', 'satellite', 'verb']
