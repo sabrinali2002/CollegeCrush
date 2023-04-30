@@ -22,7 +22,7 @@ os.environ["ROOT_PATH"] = os.path.abspath(os.path.join("..", os.curdir))
 
 MYSQL_USER = "root"
 # MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
-MYSQL_USER_PASSWORD = "Youyou0305!"
+MYSQL_USER_PASSWORD = "Xuannhi230902!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "colleges"
 mysql_engine = MySQLDatabaseHandler(
