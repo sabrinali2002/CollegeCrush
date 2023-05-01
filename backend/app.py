@@ -65,8 +65,7 @@ def sql_search(state_city, size, sort, college, cosine_similarity):
                 or (size == "medium" and enroll_int > 5000 and enroll_int < 15000)
                 or (size == "large" and enroll_int > 15000)
             ):
-                if name in college[0] and city == state_city:
-                    print("ho")
+                if name in college[0] and (city == state_city or state == state_city):
                     lst.append(
                         (
                             {
@@ -74,11 +73,15 @@ def sql_search(state_city, size, sort, college, cosine_similarity):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": college[1] + 0.75 + cosine_similarity[0][ML.fun(name,ML.personality_terms)],
+                                "score": college[1] + 0.75,
                             }
                         )
                     )
                 elif name in college[0] and city != state_city:
+                    if college[1] < 0.1:
+                        end_score = college[1]*10
+                    else:
+                        end_score = college[1]
                     lst.append(
                         (
                             {
@@ -86,7 +89,7 @@ def sql_search(state_city, size, sort, college, cosine_similarity):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": college[1]*10,
+                                "score": end_score,
                             }
                         )
                     )
@@ -104,7 +107,6 @@ def sql_search(state_city, size, sort, college, cosine_similarity):
                             )
                         )
                     else:
-                        print("hi")
                         lst.append(
                             (
                                 {
