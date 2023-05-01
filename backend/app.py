@@ -22,7 +22,7 @@ os.environ["ROOT_PATH"] = os.path.abspath(os.path.join("..", os.curdir))
 
 MYSQL_USER = "root"
 # MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
-MYSQL_USER_PASSWORD = "Xuannhi230902!"
+MYSQL_USER_PASSWORD = "Coryer242!!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "colleges"
 mysql_engine = MySQLDatabaseHandler(
@@ -34,7 +34,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-def sql_search(state_city, size, sort, college):
+def sql_search(state_city, size, sort, college, cosine_similarity):
     empty = False
     if len(college[0]) <= 1:
         empty = True
@@ -46,7 +46,6 @@ def sql_search(state_city, size, sort, college):
     query_sql = f"""SELECT * FROM colleges WHERE ((state = '{state_city}' OR city = '{state_city}') AND name IN {college_l})"""
     data = mysql_engine.query_selector(query_sql)
     if data.rowcount == 0:
-        print("hi")
         query_sql = f"""SELECT * FROM colleges WHERE (state = '{state_city}' OR city = '{state_city}' OR name IN {college_l})"""
         data = mysql_engine.query_selector(query_sql)
     s = set()
@@ -67,6 +66,7 @@ def sql_search(state_city, size, sort, college):
                 or (size == "large" and enroll_int > 15000)
             ):
                 if name in college[0] and city == state_city:
+                    print("ho")
                     lst.append(
                         (
                             {
@@ -74,7 +74,7 @@ def sql_search(state_city, size, sort, college):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": college[1] + 0.75,
+                                "score": college[1] + 0.75 + cosine_similarity[0][ML.fun(name,ML.personality_terms)],
                             }
                         )
                     )
@@ -86,7 +86,7 @@ def sql_search(state_city, size, sort, college):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": college[1],
+                                "score": college[1]*10,
                             }
                         )
                     )
@@ -104,6 +104,7 @@ def sql_search(state_city, size, sort, college):
                             )
                         )
                     else:
+                        print("hi")
                         lst.append(
                             (
                                 {
@@ -124,7 +125,7 @@ def sql_search(state_city, size, sort, college):
     return lst
 
 
-def sql_search2(region, size, sort, college):
+def sql_search2(region, size, sort, college, cosine_similarity):
     empty = False
     if len(college[0]) <= 1:
         empty = True
@@ -222,7 +223,7 @@ def sql_search2(region, size, sort, college):
     return lst
 
 
-def sql_search3(state_city, region, size, sort, college):
+def sql_search3(state_city, region, size, sort, college, cosine_similarity):
     empty = False
     if len(college[0]) <= 1:
         empty = True
@@ -264,12 +265,11 @@ def sql_search3(state_city, region, size, sort, college):
         website = elem[5]
         enroll = elem[6]
         enroll_int = int(enroll)
-        if size not in s or (
-            int(enroll) > 10
-            and (size == "small" and enroll_int < 5000)
+        if int(enroll) > 10 and (size not in s or (
+            (size == "small" and enroll_int < 5000)
             or (size == "medium" and enroll_int > 5000 and enroll_int < 15000)
             or (size == "large" and enroll_int > 15000)
-        ):
+        )):
             if name in college[0]:
                 lst.append(
                     (
@@ -485,15 +485,21 @@ def college_search():
     size = request.args.get("size")
     region = request.args.get("location")
     vibe = request.args.get("vibes")
-    vibe_list = vibe.split(",")
-
-    syn_list = synonym_search.syn_list(vibe_list)
-    intersect = synonym_search.intersect(syn_list=syn_list)
-    for i in intersect:
-        vibe_list.append(i)
-
+    vibe_list_raw = vibe.split(",")
+    vibe_list = []
+    #syn_list = synonym_search.syn_list(vibe_list)
+    #intersect = synonym_search.intersect(syn_list=syn_list)
+    #for i in intersect:
+        #vibe_list.append(i)
+    for word in vibe_list_raw:
+        replace = synonym_search.find_synonym(word)
+        if replace != None:
+            vibe_list.append(word)
+        else:
+            vibe_list.append(word)
     # ML related
     labels, clusters = ML.cluster(ML.personality_terms, ML.path, ML.new_df)
+    cosine_similarity = ML.cosine_similarity1(ML.df, ML.new_df, clusters, vibe_list)
     most_sim_cluster, sim_score = ML.find_cluster(ML.df, ML.new_df, clusters, vibe_list)
     college_list = clusters[most_sim_cluster], sim_score
     for i in range(len(college_list[0])):
@@ -503,11 +509,11 @@ def college_search():
         college_list[0].append("")
     if region == "":
         result = sql_search(
-            state_city.upper(), size, request.args.get("sort"), college_list
+            state_city.upper(), size, request.args.get("sort"), college_list, cosine_similarity
         )
     elif state_city == "":
         result = sql_search2(
-            region.lower(), size, request.args.get("sort"), college_list
+            region.lower(), size, request.args.get("sort"), college_list, cosine_similarity
         )
     elif region != "" and state_city != "":
         result = sql_search3(
@@ -515,7 +521,7 @@ def college_search():
             region.lower(),
             size,
             request.args.get("sort"),
-            college_list,
+            college_list, cosine_similarity
         )
     for elem in result:
         if elem["website"][0:5] != "https":
@@ -531,4 +537,4 @@ def college_search():
     return result
 
 
-#app.run(debug=True)
+app.run(debug=True)

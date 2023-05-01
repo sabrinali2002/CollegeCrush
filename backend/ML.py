@@ -72,6 +72,10 @@ def cluster(personality_terms, college_data_path, new_df):
 
     return labels, sorted_clusters
 
+def fun(name, college_data_path):
+    df = pd.read_csv(college_data_path)
+    college_names = df.iloc[:, 1]
+    return df.loc[college_names == name]["index"].values[0]
 
 """
 Takes in a Dataframe and labels which is a global variable set inside cluster function, and outputs the silhouette score 
@@ -99,17 +103,19 @@ Output:
     most similar clusters of colleges
 
 """
-
-
-def find_cluster(df, new_df, clusters, user_input):
+def cosine_similarity1(df, new_df, clusters, user_input):
     personality_words = new_df.columns
-    college_names = df.iloc[:, 1]
     vectorizer = TfidfVectorizer()
     vectorizer.fit(personality_words)
     user_tfidf = vectorizer.transform(user_input)
     # calculate the cosine similarity between user input and each college
 
     similarity_scores = cosine_similarity(user_tfidf, new_df.values)
+    return similarity_scores
+
+def find_cluster(df, new_df, clusters, user_input):
+    college_names = df.iloc[:, 1]
+    similarity_scores = cosine_similarity1(df, new_df, clusters, user_input)
 
     cluster_number = -1
     cluster_max_sim_score = -1
