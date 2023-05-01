@@ -21,6 +21,7 @@ os.environ["ROOT_PATH"] = os.path.abspath(os.path.join("..", os.curdir))
 # MYSQL_DATABASE = "colleges"
 
 MYSQL_USER = "root"
+<<<<<<< HEAD
 # MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
 MYSQL_USER_PASSWORD = "Xuannhi230902!"
 MYSQL_PORT = 3306
@@ -30,10 +31,25 @@ mysql_engine = MySQLDatabaseHandler(
 )
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
 mysql_engine.load_file_into_db()
+=======
+MYSQL_USER_PASSWORD = "Youyou0305!"
+MYSQL_PORT = 3306
+MYSQL_DATABASE = "clush"
+
+mysql_engine = MySQLDatabaseHandler(
+    MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE
+)
+
+# Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
+mysql_engine.load_file_into_db()
+
+
+>>>>>>> 163f1fe0d78c235e84d09b3e3f3003f0bd5af1a0
 app = Flask(__name__)
 CORS(app)
 
 
+<<<<<<< HEAD
 def sql_search(state_city, size, sort, college):
     empty = False
     if len(college[0]) <= 1:
@@ -368,6 +384,16 @@ def edit_matrix(query, message, ins_cost_func, del_cost_func, sub_cost_func):
                 chart[i - 1, j - 1] + sub_cost_func(query, message, i, j),
             )
     return chart
+=======
+# Sample search, the LIKE operator in this case is hard-coded,
+# but if you decide to use SQLAlchemy ORM framework,
+# there's a much better and cleaner way to do this
+def sql_search(episode):
+    query_sql = f"""SELECT * FROM episodes WHERE LOWER( title ) LIKE '%%{episode.lower()}%%' limit 10"""
+    keys = ["id", "title", "descr"]
+    data = mysql_engine.query_selector(query_sql)
+    return json.dumps([dict(zip(keys, i)) for i in data])
+>>>>>>> 163f1fe0d78c235e84d09b3e3f3003f0bd5af1a0
 
 
 def edit_distance(query, message, ins_cost_func, del_cost_func, sub_cost_func):
@@ -477,6 +503,7 @@ def check_typo(state_city, size, sort):
 def home():
     return render_template("base.html", title="sample html")
 
+<<<<<<< HEAD
 
 @app.route("/colleges")
 def college_search():
@@ -529,6 +556,13 @@ def college_search():
     elif result == []:
         result = [{"messages": "College not found :("}]
     return result
+=======
+>>>>>>> 163f1fe0d78c235e84d09b3e3f3003f0bd5af1a0
 
 
+<<<<<<< HEAD
 #app.run(debug=True)
+=======
+
+# app.run(debug=True)
+>>>>>>> 163f1fe0d78c235e84d09b3e3f3003f0bd5af1a0
