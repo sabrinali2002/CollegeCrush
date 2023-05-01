@@ -89,7 +89,7 @@ def sql_search(state_city, size, sort, college, cosine_similarity):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": end_score,
+                                "score": round(end_score,5),
                             }
                         )
                     )
@@ -187,7 +187,7 @@ def sql_search2(region, size, sort, college, cosine_similarity):
                             "location": city + ", " + state,
                             "enrolled": enroll,
                             "website": website,
-                            "score": college[1] + 0.75,
+                            "score": round(college[1] + 0.75,5),
                         }
                     )
                 )
