@@ -13,7 +13,7 @@
     <form onsubmit="return validateForm()">
       <div class="input-box" onclick="sendFocus()">
         <img src="/mag.png" alt = "mag"/>
-        <input placeholder="Enter your preferred college vibe!" id="filter-text-val">
+        <input name = "search" placeholder="In one word, enter your personality type! E.g. fun, reserved, studious, partier" id="filter-text-val">
       </div>
 
       <br><br>
@@ -32,9 +32,16 @@
 
       <br><br>
 
-      <div class = "q2">
-        <label for="textField">Enter a city or state</label>
-        <input type="text" id="filter-text-val" name="city" placeholder="Input a city or state">
+      <div class="q2">
+        <div class = "city-con">
+          <label for="textField">Enter a City</label>
+          <input type="text" id="filter-text-val" name="city" placeholder="Input a city">
+        </div>
+        <div class= "or"><h2>OR</h2></div>
+        <div class = "state-con">
+          <label for="stateText">Enter a State</label>
+          <input type="text" id="filter-text-val" name="state" placeholder="Enter State Abbreviation">
+        </div>
       </div>
 
       <br><br>
@@ -51,7 +58,7 @@
 
       <br><br>
 
-      <div class=" q4">
+      <div class= "q4">
         <label for="sort_input">Sort By:</label>
         <select id="sort_input">
           <option value="">--Please choose an option--</option>
@@ -123,9 +130,28 @@
       function validateForm() {
         const dropdownValue = document.forms[0].selectField.value;
         const textInputValue = document.forms[0].city.value;
+        const stateTextValue = document.forms[0].state.value;
+        const searchBarInput = document.forms[0].search.value;
 
-        if (dropdownValue === "" && textInputValue === "") {
-          alert("Please input in a region or a preferred city or state");
+        const stateRegex = /^[a-zA-Z]{2}$/;
+
+        if (dropdownValue === "" && (textInputValue === "" && stateTextValue === "")) {
+          alert("Please input in a region OR a preferred city or state");
+          return false;
+        }
+
+        if (textInputValue !== "" && stateTextValue !== "") {
+          alert("Please input either a city or a state, not both");
+          return false;
+        }
+
+        if (stateTextValue !== "" && !stateRegex.test(stateTextValue)) {
+          alert("Please input a valid state abbreviation");
+          return false;
+        }
+
+        if (searchBarInput !== "" && searchBarInput.indexOf(' ') !== -1) {
+          alert("Please input only one word for your personality aspect");
           return false;
         }
 

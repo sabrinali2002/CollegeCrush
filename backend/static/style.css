@@ -55,7 +55,11 @@
     align-items: center;
     margin-top: 10px;
     padding: 12px;
-    width: 50%;
+    width: 70%;
+}
+
+input {
+    width: 100%;
 }
 
 .input-box img {
@@ -171,6 +175,30 @@ select {
     font-size: 20px
 }
 
+.q2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+}
+
+.q2 .city-con,
+.q2 .state-con,
+.q2 .or {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.or h2{
+    font-size: 18px;
+}
+
+.q2 label {
+  margin-bottom: 5px;
+}
+
+
 .q5 {
     display: flex;
     flex-direction: row;
@@ -190,42 +218,6 @@ select {
 footer {
     padding: 1.4em;
 }
-/* 
-.slider {
-    -webkit-appearance: none;
-    width: 70%;
-    height: 20px;
-    border-radius: 10px;
-    background: #ddd;
-    outline: none;
-    opacity: 0.7;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
-    margin-top: -110px;
-    position: relative;
-}
-
-.slider:hover {
-    opacity: 1;
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #5799e5;
-    cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-    width: 30px;
-    height: 30px;
-    border-radius: 20%;
-    background: #549fd5;
-    cursor: pointer;
-}  */
 
 .tick-container {
     display: flex;
@@ -237,3 +229,4 @@ footer {
     flex: 5px;
     text-align: center;
 }
+
