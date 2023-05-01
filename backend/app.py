@@ -21,8 +21,8 @@ os.environ["ROOT_PATH"] = os.path.abspath(os.path.join("..", os.curdir))
 # MYSQL_DATABASE = "colleges"
 
 MYSQL_USER = "root"
-# MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
-MYSQL_USER_PASSWORD = "Coryer242!!"
+MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+#MYSQL_USER_PASSWORD = "Coryer242!!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "colleges"
 mysql_engine = MySQLDatabaseHandler(
@@ -539,4 +539,4 @@ def college_search():
     return result
 
 
-app.run(debug=True)
+#app.run(debug=True)
