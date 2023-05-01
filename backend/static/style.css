@@ -13,7 +13,7 @@
 }
 
 #google-c {
-    color: #4285F4;
+    color: #4083ee;
 }
 
 #google-s {
@@ -40,7 +40,7 @@
     display: flex;
     align-items: center;
     font-size: 48px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Calibri', sans-serif;
 }
 
 .google-colors h1 {
@@ -55,7 +55,7 @@
     align-items: center;
     margin-top: 10px;
     padding: 12px;
-    width: 600px;
+    width: 50%;
 }
 
 .input-box img {
@@ -93,7 +93,7 @@
 /* Global styles */
 * {
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -103,7 +103,7 @@ body {
 }
 
 header {
-    background-color: #89cff9;
+    background-color: #6dd6ff;
     color: #fff;
     display: flex;
     justify-content: space-between;
@@ -164,7 +164,6 @@ select {
 }
 
 .q1,
-.q01,
 .q2,
 .q3,
 .q5 {
@@ -172,7 +171,7 @@ select {
     font-size: 20px
 }
 
-.q4 {
+.q5 {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -191,7 +190,7 @@ select {
 footer {
     padding: 1.4em;
 }
-
+/* 
 .slider {
     -webkit-appearance: none;
     width: 70%;
@@ -226,7 +225,7 @@ footer {
     border-radius: 20%;
     background: #549fd5;
     cursor: pointer;
-}
+}  */
 
 .tick-container {
     display: flex;
