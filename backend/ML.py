@@ -8,7 +8,11 @@ import test
 """
 Returns a new dataframe that contains only personality related words
 """
-
+def getTFIDF(df, name, word):
+    try:
+        return df.loc[df['University Name'] == name.title()].loc[:,word].values[0]
+    except:
+        return 0
 
 def getDataframe(college_data_path):
     # dataframe of whole dataset
@@ -66,16 +70,8 @@ def cluster(personality_terms, college_data_path, new_df):
             clusters[labels[i]] = [college_names[i]]
 
     sorted_clusters = {k: clusters[k] for k in sorted(clusters.keys())}
-    # print(df.head(20))
-    # print(labels)
-    # print(df.iloc[1,1])
 
     return labels, sorted_clusters
-
-def fun(name, college_data_path):
-    df = pd.read_csv(college_data_path)
-    college_names = df.iloc[:, 1]
-    return df.loc[college_names == name]["index"].values[0]
 
 """
 Takes in a Dataframe and labels which is a global variable set inside cluster function, and outputs the silhouette score 
@@ -119,11 +115,9 @@ def find_cluster(df, new_df, clusters, user_input):
 
     cluster_number = -1
     cluster_max_sim_score = -1
-
     for cluster_i, colleges in clusters.items():
         score = 0
         for college in colleges:
-           # print(df.loc[college_names == college]["index"].values[0])
             college_index = df.loc[college_names == college]["index"].values[0]
             score += similarity_scores[0][college_index]
         size = len(colleges)

@@ -1,6 +1,7 @@
 import json
 import os
 import csv
+import pandas as pd
 import sys
 from flask import Flask, render_template, request
 from flask_cors import CORS
@@ -34,7 +35,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-def sql_search(state_city, size, sort, college, cosine_similarity):
+def sql_search(state_city, size, sort, college, vibe, df):
     empty = False
     if len(college[0]) <= 1:
         empty = True
@@ -73,7 +74,7 @@ def sql_search(state_city, size, sort, college, cosine_similarity):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": college[1] + 0.75,
+                                "score": round(college[1] + 0.75 + ML.getTFIDF(df,name, vibe)),
                             }
                         )
                     )
@@ -81,7 +82,7 @@ def sql_search(state_city, size, sort, college, cosine_similarity):
                     if college[1] < 0.1:
                         end_score = college[1]*10
                     else:
-                        end_score = college[1]
+                        end_score = college[1] +  ML.getTFIDF(df,name, vibe)
                     lst.append(
                         (
                             {
@@ -114,7 +115,7 @@ def sql_search(state_city, size, sort, college, cosine_similarity):
                                     "location": city + ", " + state,
                                     "enrolled": enroll,
                                     "website": website,
-                                    "score": 0.75,
+                                    "score": round(0.8 + ML.getTFIDF(df,name, vibe),5),
                                 }
                             )
                         )
@@ -123,7 +124,7 @@ def sql_search(state_city, size, sort, college, cosine_similarity):
     elif sort == "Enrollment Size":
         lst = sorted(lst, key=lambda d: int(d["enrolled"]))
     else:
-        lst = sorted(lst, key=lambda d: int(d["score"]))[::-1]
+        lst = sorted(lst, key=lambda d: d["score"])[::-1]
     return lst
 
 
@@ -500,6 +501,7 @@ def college_search():
         else:
             vibe_list.append(word)
     # ML related
+    df = pd.read_csv("X1_with_labels.csv")
     labels, clusters = ML.cluster(ML.personality_terms, ML.path, ML.new_df)
     cosine_similarity = ML.cosine_similarity1(ML.df, ML.new_df, clusters, vibe_list)
     most_sim_cluster, sim_score = ML.find_cluster(ML.df, ML.new_df, clusters, vibe_list)
@@ -511,11 +513,11 @@ def college_search():
         college_list[0].append("")
     if region == "":
         result = sql_search(
-            state_city.upper(), size, request.args.get("sort"), college_list, cosine_similarity
+            state_city.upper(), size, request.args.get("sort"), college_list, vibe_list[0],df
         )
     elif state_city == "":
         result = sql_search2(
-            region.lower(), size, request.args.get("sort"), college_list, cosine_similarity
+            region.lower(), size, request.args.get("sort"), college_list, vibe_list[0],df
         )
     elif region != "" and state_city != "":
         result = sql_search3(
@@ -523,7 +525,7 @@ def college_search():
             region.lower(),
             size,
             request.args.get("sort"),
-            college_list, cosine_similarity
+            college_list, vibe_list[0],df
         )
     for elem in result:
         if elem["website"][0:5] != "https":
