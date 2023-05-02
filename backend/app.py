@@ -37,8 +37,10 @@ CORS(app)
 
 def sql_search(state_city, size, sort, college, vibe, df):
     empty = False
-    if len(college[0]) <= 1:
+    if vibe == "":
         empty = True
+    print(college)
+    if len(college[0]) <= 1:
         college[0].append("")
         college[0].append("")
     college_l = tuple(college[0])
@@ -73,11 +75,12 @@ def sql_search(state_city, size, sort, college, vibe, df):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": round(college[1] + 0.75 + ML.getTFIDF(df,name, vibe)),
+                                "score": round(college[1] + 0.75 + ML.getTFIDF(df,name, vibe),5),
                             }
                         )
                     )
                 elif name in college[0] and city != state_city:
+                    print(2)
                     if college[1] < 0.1:
                         end_score = college[1]*10
                     else:
@@ -94,6 +97,7 @@ def sql_search(state_city, size, sort, college, vibe, df):
                         )
                     )
                 else:
+                    print(3)
                     if empty:
                         lst.append(
                             (
@@ -129,8 +133,9 @@ def sql_search(state_city, size, sort, college, vibe, df):
 
 def sql_search2(region, size, sort, college, vibe, df):
     empty = False
-    if len(college[0]) <= 1:
+    if vibe == "":
         empty = True
+    if len(college[0]) <= 1:
         college[0].append("")
         college[0].append("")
     lst = []
@@ -227,8 +232,9 @@ def sql_search2(region, size, sort, college, vibe, df):
 
 def sql_search3(state_city, region, size, sort, college, vibe, df):
     empty = False
-    if len(college[0]) <= 1:
+    if vibe == "":
         empty = True
+    if len(college[0]) <= 1:
         college[0].append("")
         college[0].append("")
     college_l = tuple(college[0])
@@ -454,27 +460,6 @@ def check_typo(state_city, size, sort):
     word_distance = sorted(word_distance, key=lambda x: x[0])
     return word_distance
 
-    # diff_dict[elem[0]] = diff
-    # print(diff_dict)
-    # for elem in list(data):
-    #     name = elem[0]
-    #     city = elem[1]
-    #     state = elem[2]
-    #     website = elem[5]
-    #     enroll = elem[6]
-    #     lst.append(({'title': name, 'location': city + ", "+state,
-    #                'enrolled': enroll, 'website': website}))
-    # if sort == "Alphabetical":
-    #     lst = sorted(lst, key=lambda d: d['title'])
-    # elif sort == "Enrollment Size":
-    #     lst = sorted(lst, key=lambda d: int(d['enrolled']))
-    # return lst
-
-
-# def get_colleges():
-
-
-#############################
 @app.route("/")
 def home():
     return render_template("base.html", title="sample html")
@@ -489,20 +474,14 @@ def college_search():
     vibe = request.args.get("vibes")
     vibe_list_raw = vibe.split(",")
     vibe_list = []
-    #syn_list = synonym_search.syn_list(vibe_list)
-    #intersect = synonym_search.intersect(syn_list=syn_list)
-    #for i in intersect:
-        #vibe_list.append(i)
     for word in vibe_list_raw:
         replace = synonym_search.find_synonym(word)
         if replace != None:
             vibe_list.append(word)
         else:
             vibe_list.append(word)
-    # ML related
     df = pd.read_csv("X1_with_labels.csv")
     labels, clusters = ML.cluster(ML.personality_terms, ML.path, ML.new_df)
-    cosine_similarity = ML.cosine_similarity1(ML.df, ML.new_df, clusters, vibe_list)
     most_sim_cluster, sim_score = ML.find_cluster(ML.df, ML.new_df, clusters, vibe_list)
     college_list = clusters[most_sim_cluster], sim_score
     for i in range(len(college_list[0])):
