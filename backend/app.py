@@ -36,10 +36,12 @@ CORS(app)
 
 
 def sql_search(state_city, size, sort, college, vibe, df):
+    #vibe: first word input
+    #empty: whether there's a user personality input
+    #college: [[colleges],similarity]
     empty = False
     if vibe == "":
         empty = True
-    print(college)
     if len(college[0]) <= 1:
         college[0].append("")
         college[0].append("")
@@ -75,12 +77,11 @@ def sql_search(state_city, size, sort, college, vibe, df):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": round(college[1] + 0.75 + ML.getTFIDF(df,name, vibe),5),
+                                "score": round(college[1] + 0.8 + ML.getTFIDF(df,name, vibe),5),
                             }
                         )
                     )
                 elif name in college[0] and city != state_city:
-                    print(2)
                     if college[1] < 0.1:
                         end_score = college[1]*10
                     else:
@@ -97,7 +98,6 @@ def sql_search(state_city, size, sort, college, vibe, df):
                         )
                     )
                 else:
-                    print(3)
                     if empty:
                         lst.append(
                             (
@@ -118,7 +118,7 @@ def sql_search(state_city, size, sort, college, vibe, df):
                                     "location": city + ", " + state,
                                     "enrolled": enroll,
                                     "website": website,
-                                    "score": round(0.8 + ML.getTFIDF(df,name, vibe),5),
+                                    "score": round(0.75 + ML.getTFIDF(df,name, vibe),5),
                                 }
                             )
                         )
@@ -226,7 +226,7 @@ def sql_search2(region, size, sort, college, vibe, df):
     elif sort == "Enrollment Size":
         lst = sorted(lst, key=lambda d: int(d["enrolled"]))
     else:
-        lst = sorted(lst, key=lambda d: int(d["score"]))[::-1]
+        lst = sorted(lst, key=lambda d: d["score"])[::-1]
     return lst
 
 
@@ -320,7 +320,7 @@ def sql_search3(state_city, region, size, sort, college, vibe, df):
     elif sort == "Enrollment Size":
         lst = sorted(lst, key=lambda d: int(d["enrolled"]))
     else:
-        lst = sorted(lst, key=lambda d: int(d["score"]))[::-1]
+        lst = sorted(lst, key=lambda d: d["score"])[::-1]
     return lst
 
 
