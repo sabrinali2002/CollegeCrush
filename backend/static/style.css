@@ -10,6 +10,7 @@
     justify-content: start;
     align-items: center;
     flex-direction: column;
+    margin-left: 2em;
 }
 
 #google-c {
@@ -40,7 +41,7 @@
     display: flex;
     align-items: center;
     font-size: 48px;
-    font-family: 'Calibri', sans-serif;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .google-colors h1 {
@@ -106,14 +107,26 @@ body {
     background-color: #f8f8f8;
 }
 
+.content {
+    padding: 2em;
+}
+
 header {
-    background-color: #6dd6ff;
+    background-color: #5EBEF6;
     color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    outline: 5px dotted black
+    outline: 5px dotted rgb(97, 94, 94)
+}
+
+header img {
+    width: 40%;
+    height: 5%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 nav ul {
@@ -190,6 +203,10 @@ select {
   align-items: center;
 }
 
+.or {
+    margin-top: 2em;
+}
+
 .or h2{
     font-size: 18px;
 }
@@ -204,6 +221,24 @@ select {
     flex-direction: row;
     width: 100%;
 }
+
+.city-con input {
+  width: 250px;
+  height: 50px;
+  padding: 1em;
+  margin-right: 2em;
+}
+
+.state-con  {
+    width: 250px;
+    height: 76px;
+    margin-left: 2em;
+  }
+
+select {
+    margin-top: 0.25;
+}
+
 
 .size-slider {
     width: 65%;
@@ -229,4 +264,3 @@ footer {
     flex: 5px;
     text-align: center;
 }
-
