@@ -43,7 +43,6 @@ def sql_search(state_city, size, sort, college, vibe, df):
         college[0].append("")
     college_l = tuple(college[0])
     lst = []
-    # print(college_l)
     query_sql = f"""SELECT * FROM colleges WHERE ((state = '{state_city}' OR city = '{state_city}') AND name IN {college_l})"""
     data = mysql_engine.query_selector(query_sql)
     if data.rowcount == 0:
@@ -128,7 +127,7 @@ def sql_search(state_city, size, sort, college, vibe, df):
     return lst
 
 
-def sql_search2(region, size, sort, college, cosine_similarity):
+def sql_search2(region, size, sort, college, vibe, df):
     empty = False
     if len(college[0]) <= 1:
         empty = True
@@ -188,7 +187,7 @@ def sql_search2(region, size, sort, college, cosine_similarity):
                             "location": city + ", " + state,
                             "enrolled": enroll,
                             "website": website,
-                            "score": round(college[1] + 0.75,5),
+                            "score": round(college[1] + 0.75 + ML.getTFIDF(df,name, vibe),5),
                         }
                     )
                 )
@@ -213,7 +212,7 @@ def sql_search2(region, size, sort, college, cosine_similarity):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": 0.75,
+                                "score": 0.75 + ML.getTFIDF(df,name, vibe),
                             }
                         )
                     )
@@ -226,7 +225,7 @@ def sql_search2(region, size, sort, college, cosine_similarity):
     return lst
 
 
-def sql_search3(state_city, region, size, sort, college, cosine_similarity):
+def sql_search3(state_city, region, size, sort, college, vibe, df):
     empty = False
     if len(college[0]) <= 1:
         empty = True
@@ -281,7 +280,7 @@ def sql_search3(state_city, region, size, sort, college, cosine_similarity):
                             "location": city + ", " + state,
                             "enrolled": enroll,
                             "website": website,
-                            "score": college[1] + 0.75,
+                            "score": college[1] + 0.75 + ML.getTFIDF(df,name, vibe),
                         }
                     )
                 )
@@ -306,7 +305,7 @@ def sql_search3(state_city, region, size, sort, college, cosine_similarity):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": 0.75,
+                                "score": 0.75 + ML.getTFIDF(df,name, vibe),
                             }
                         )
                     )
@@ -508,9 +507,6 @@ def college_search():
     college_list = clusters[most_sim_cluster], sim_score
     for i in range(len(college_list[0])):
         college_list[0][i] = college_list[0][i].upper()
-    if len(college_list[0]) <= 1:
-        college_list[0].append("")
-        college_list[0].append("")
     if region == "":
         result = sql_search(
             state_city.upper(), size, request.args.get("sort"), college_list, vibe_list[0],df
