@@ -8,14 +8,15 @@
 
 <body>
   <header>
-    <h1>College Crush</h1>
+    <img src="{{ url_for('static', filename='images/logo4300.png') }}" alt="logo" />
   </header>
   <main>
     <h2>Find Your Perfect College Match</h2>
     <form>
       <div class="input-box" onclick="sendFocus()">
         <img src="{{ url_for('static', filename='images/mag.png') }}" />
-        <input placeholder="Enter your preferred college vibe!" id="filter-text-val">
+        <input placeholder="In ONE WORD ONLY, enter your personality type! E.g. fun, reserved, studious, partier"
+          id="filter-text-val">
       </div>
       <!-- <div class="q1">
         <label for="major">Select your preferred major:</label>
@@ -62,7 +63,7 @@
         </select> <br><br>
       </div> -->
 
-      <div class="q2">
+      <!-- <div class="q2">
         <label for="location">Select Your Preferred Region:</label>
         <select id="location-input">
           <option value="">Choose One</option>
@@ -72,12 +73,39 @@
           <option value="southwest">Southwest</option>
           <option value="west">West</option>
         </select> <br><br>
+      </div> -->
+      <div class="q1">
+        <label for="location">Select Your Preferred Region:</label>
+        <select id="location-input">
+          <option value="">--Please choose an option--</option>
+          <option value="northeast">Northeast</option>
+          <option value="southeast">Southeast</option>
+          <option value="midwest">Midwest</option>
+          <option value="southwest">Southwest</option>
+          <option value="west">West</option>
+        </select>
       </div>
-      <div class="q3">
+
+      <!-- <div class="q3">
         <label for="city">Select Your Preferred State or City:</label>
         <input placeholder="Search for your ideal college match!" id="state">
         <br><br>
+      </div> -->
+
+      <div class="q2">
+        <div class="city-con">
+          <label for="textField">Enter a City</label>
+          <input type="text" id="city" name="city" placeholder="Input a city">
+        </div>
+        <div class="or">
+          <h2>OR</h2>
+        </div>
+        <div class="state-con">
+          <label for="stateText">Enter a State</label>
+          <input type="text" id="state" name="state" placeholder="Enter State Abbreviation">
+        </div>
       </div>
+
 
       <div class=" q3">
         <label for="size">Select Your Preferred School Size:</label>
@@ -97,7 +125,7 @@
           <option value="3.5">Rural</option>
         </select> <br><br>
       </div> -->
-      <div class=" q5">
+      <div class=" q4">
         <label for="sort_input">Sort By:</label>
         <select id="sort_input">
           <option value="">Choose One</option>
