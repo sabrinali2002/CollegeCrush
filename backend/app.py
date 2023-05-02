@@ -22,8 +22,8 @@ os.environ["ROOT_PATH"] = os.path.abspath(os.path.join("..", os.curdir))
 # MYSQL_DATABASE = "colleges"
 
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
-#MYSQL_USER_PASSWORD = "Coryer242!!"
+#MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+MYSQL_USER_PASSWORD = "Coryer242!!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "colleges"
 mysql_engine = MySQLDatabaseHandler(
@@ -77,7 +77,7 @@ def sql_search(state_city, size, sort, college, vibe, df):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": round(college[1] + 0.8 + ML.getTFIDF(df,name, vibe)*.2,5),
+                                "score": round(college[1] + 0.8 + ML.getTFIDF(df,name, vibe)*3.5,5),
                             }
                         )
                     )
@@ -118,7 +118,7 @@ def sql_search(state_city, size, sort, college, vibe, df):
                                     "location": city + ", " + state,
                                     "enrolled": enroll,
                                     "website": website,
-                                    "score": round(0.8 + ML.getTFIDF(df,name, vibe)*3,5),
+                                    "score": round(0.8 + ML.getTFIDF(df,name, vibe)*3.5,5),
                                 }
                             )
                         )
@@ -192,7 +192,7 @@ def sql_search2(region, size, sort, college, vibe, df):
                             "location": city + ", " + state,
                             "enrolled": enroll,
                             "website": website,
-                            "score": round(college[1] + 0.75 + ML.getTFIDF(df,name, vibe),5),
+                            "score": round(college[1] + 0.8 + ML.getTFIDF(df,name, vibe)*4,5),
                         }
                     )
                 )
@@ -217,7 +217,7 @@ def sql_search2(region, size, sort, college, vibe, df):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": 0.75 + ML.getTFIDF(df,name, vibe),
+                                "score": 0.8 + round(ML.getTFIDF(df,name, vibe)*4,5),
                             }
                         )
                     )
@@ -286,7 +286,7 @@ def sql_search3(state_city, region, size, sort, college, vibe, df):
                             "location": city + ", " + state,
                             "enrolled": enroll,
                             "website": website,
-                            "score": college[1] + 0.75 + ML.getTFIDF(df,name, vibe),
+                            "score": college[1] + 0.8 + ML.getTFIDF(df,name, vibe),
                         }
                     )
                 )
@@ -480,6 +480,7 @@ def college_search():
             vibe_list.append(word)
         else:
             vibe_list.append(word)
+    print(vibe_list)
     df = pd.read_csv("X1_with_labels.csv")
     labels, clusters = ML.cluster(ML.personality_terms, ML.path, ML.new_df)
     most_sim_cluster, sim_score = ML.find_cluster(ML.df, ML.new_df, clusters, vibe_list)
@@ -518,4 +519,4 @@ def college_search():
     return result
 
 
-#app.run(debug=True)
+app.run(debug=True)
