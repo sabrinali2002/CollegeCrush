@@ -189,10 +189,10 @@ select {
 }
 
 .q2 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
 }
 
 .q2 .city-con,
