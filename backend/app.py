@@ -77,7 +77,7 @@ def sql_search(state_city, size, sort, college, vibe, df):
                                 "location": city + ", " + state,
                                 "enrolled": enroll,
                                 "website": website,
-                                "score": round(college[1] + 0.8 + ML.getTFIDF(df,name, vibe),5),
+                                "score": round(college[1] + 0.8 + ML.getTFIDF(df,name, vibe)*.2,5),
                             }
                         )
                     )
@@ -118,16 +118,16 @@ def sql_search(state_city, size, sort, college, vibe, df):
                                     "location": city + ", " + state,
                                     "enrolled": enroll,
                                     "website": website,
-                                    "score": round(0.75 + ML.getTFIDF(df,name, vibe),5),
+                                    "score": round(0.8 + ML.getTFIDF(df,name, vibe)*3,5),
                                 }
                             )
                         )
     if sort == "Alphabetical":
-        lst = sorted(lst, key=lambda d: d["title"])
+        lst = sorted(lst, key=lambda d: d["title"])[:min(len(lst),10)]
     elif sort == "Enrollment Size":
-        lst = sorted(lst, key=lambda d: int(d["enrolled"]))
+        lst = sorted(lst, key=lambda d: int(d["enrolled"]))[:min(len(lst),10)]
     else:
-        lst = sorted(lst, key=lambda d: d["score"])[::-1]
+        lst = sorted(lst, key=lambda d: d["score"])[::-1][:min(len(lst),10)]
     return lst
 
 
@@ -222,11 +222,11 @@ def sql_search2(region, size, sort, college, vibe, df):
                         )
                     )
     if sort == "Alphabetical":
-        lst = sorted(lst, key=lambda d: d["title"])
+        lst = sorted(lst, key=lambda d: d["title"])[:min(len(lst),10)]
     elif sort == "Enrollment Size":
-        lst = sorted(lst, key=lambda d: int(d["enrolled"]))
+        lst = sorted(lst, key=lambda d: int(d["enrolled"]))[:min(len(lst),10)]
     else:
-        lst = sorted(lst, key=lambda d: d["score"])[::-1]
+        lst = sorted(lst, key=lambda d: d["score"])[::-1][:min(len(lst),10)]
     return lst
 
 
@@ -316,11 +316,11 @@ def sql_search3(state_city, region, size, sort, college, vibe, df):
                         )
                     )
     if sort == "Alphabetical":
-        lst = sorted(lst, key=lambda d: d["title"])
+        lst = sorted(lst, key=lambda d: d["title"])[:min(len(lst),10)]
     elif sort == "Enrollment Size":
-        lst = sorted(lst, key=lambda d: int(d["enrolled"]))
+        lst = sorted(lst, key=lambda d: int(d["enrolled"]))[:min(len(lst),10)]
     else:
-        lst = sorted(lst, key=lambda d: d["score"])[::-1]
+        lst = sorted(lst, key=lambda d: d["score"])[::-1][:min(len(lst),10)]
     return lst
 
 
