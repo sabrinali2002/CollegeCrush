@@ -41,7 +41,7 @@
     display: flex;
     align-items: center;
     font-size: 48px;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .google-colors h1 {
@@ -98,7 +98,7 @@ input {
 /* Global styles */
 * {
     box-sizing: border-box;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -189,30 +189,30 @@ select {
 }
 
 .q2 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
 }
 
 .q2 .city-con,
 .q2 .state-con,
 .q2 .or {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .or {
     margin-top: 2em;
 }
 
-.or h2{
+.or h2 {
     font-size: 18px;
 }
 
 .q2 label {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 
@@ -223,17 +223,17 @@ select {
 }
 
 .city-con input {
-  width: 250px;
-  height: 50px;
-  padding: 1em;
-  margin-right: 2em;
+    width: 250px;
+    height: 50px;
+    padding: 1em;
+    margin-right: 2em;
 }
 
-.state-con  {
+.state-con {
     width: 250px;
     height: 76px;
     margin-left: 2em;
-  }
+}
 
 select {
     margin-top: 0.25;
@@ -264,4 +264,3 @@ footer {
     flex: 5px;
     text-align: center;
 }
-
